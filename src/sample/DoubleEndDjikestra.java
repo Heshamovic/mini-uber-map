@@ -4,6 +4,9 @@ import javafx.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.Vector;
 
 public class DoubleEndDjikestra {
@@ -74,7 +77,12 @@ public class DoubleEndDjikestra {
     }
     public static void DEJ(int radius, int xSrc, int ySrc, int xDest, int yDest)
     {
-        
+        PriorityQueue<Pair<Integer, Pair<Integer, Integer>>> pqf = new PriorityQueue<Pair<Integer, Pair<Integer, Integer>>>();
+        PriorityQueue<Pair<Integer, Pair<Integer, Integer>>> pqb = new PriorityQueue<Pair<Integer, Pair<Integer, Integer>>>();
+        Integer parentf[] = new Integer[numberOfNodes + 2];
+        Integer parentb[] = new Integer[numberOfNodes + 2];
+        Arrays.fill(parentf, -1);
+        Arrays.fill(parentb, -1);
     }
     public static void query() throws Exception
     {
@@ -87,7 +95,6 @@ public class DoubleEndDjikestra {
             s = BR.readLine();
             a = s.split(" ");
             DEJ(Integer.parseInt(a[4]), Integer.parseInt(a[0]), Integer.parseInt(a[2]), Integer.parseInt(a[3]), Integer.parseInt(a[4]));
-
         }
     }
 
