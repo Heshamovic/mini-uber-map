@@ -19,23 +19,15 @@ public class DoubleEndDjikestra {
         public pnode(Double f, Double x, Integer s, Integer t)
         {
             this.time = f;
-            this.distance = f;
+            this.distance = x;
             this.parent = s;
             this.nod = t;
         }
         @Override
         public int compareTo(pnode other) {
-            if (this.time == other.time)
-            {
-                if (this.distance == other.distance)
-                    return 0;
-                else if (this.distance > other.distance)
-                    return 1;
-                return -1;
-            }
-            else if (this.time > other.time)
-                return 1;
-            return -1;
+            if (this.time.compareTo(other.time) == 0)
+                return this.distance.compareTo(other.distance);
+            return this.time.compareTo(other.time);
         }
     }
     private static Integer numberOfNodes, numberOfEdges, numberOfQueries, to;
@@ -79,7 +71,7 @@ public class DoubleEndDjikestra {
     }
     public static void build() throws Exception
     {
-        FileReader FR = new FileReader("Samples/LargeCases/SFMap.txt");
+        FileReader FR = new FileReader("Samples/SampleCases/map3.txt");
         BufferedReader BR = new BufferedReader(FR);
         String s = BR.readLine();
         String a[] = new String[3];
@@ -237,17 +229,17 @@ public class DoubleEndDjikestra {
         QA.totalWalkingDest += Math.sqrt(calcdis(nodes.elementAt(QA.path.lastElement()).X, nodes.elementAt(QA.path.lastElement()).Y, xDest, yDest));
         QA.totalWalkingDest += Math.sqrt(calcdis(nodes.elementAt(QA.path.firstElement()).X, nodes.elementAt(QA.path.firstElement()).Y, xSrc, ySrc));
         QA.totalDist += QA.totalWalkingDest;
-        System.out.println(QA.shortestTime * 60.0);
-        System.out.println(QA.totalDist);
-        System.out.println(QA.totalWalkingDest);
-        System.out.println(QA.totalDist - QA.totalWalkingDest);
+        System.out.println(String.format("%.2f", QA.shortestTime * 60.0));
+        System.out.println(String.format("%.2f", QA.totalDist));
+        System.out.println(String.format("%.2f", QA.totalWalkingDest));
+        System.out.println(String.format("%.2f", QA.totalDist - QA.totalWalkingDest));
         for (int i = 0; i < QA.path.size(); i++)
             System.out.print(QA.path.elementAt(i) + " ");
         System.out.println();
     }
     public static void query() throws Exception
     {
-        FileReader FR = new FileReader("Samples/LargeCases/SFQueries.txt");
+        FileReader FR = new FileReader("Samples/SampleCases/queries3.txt");
         BufferedReader BR = new BufferedReader(FR);
         String s = BR.readLine(), a[] = new String[5];
         numberOfQueries = Integer.parseInt(s);
