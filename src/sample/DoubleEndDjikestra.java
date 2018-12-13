@@ -44,6 +44,10 @@ public class DoubleEndDjikestra {
             path = new Vector<Integer>();
         }
     }
+    public static Double comparedis(double x1, double y1, int x2, int y2)
+    {
+        return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+    }
     public static void build() throws Exception
     {
         FileReader FR = new FileReader("Samples/SampleCases/map1.txt");
@@ -75,14 +79,28 @@ public class DoubleEndDjikestra {
             edges.elementAt(Integer.parseInt(a[1])).add(n1);
         }
     }
-    public static void DEJ(int radius, int xSrc, int ySrc, int xDest, int yDest)
+    public static void DEDIJ(int radius, int xSrc, int ySrc, int xDest, int yDest)
     {
-        PriorityQueue<Pair<Integer, Pair<Integer, Integer>>> pqf = new PriorityQueue<Pair<Integer, Pair<Integer, Integer>>>();
-        PriorityQueue<Pair<Integer, Pair<Integer, Integer>>> pqb = new PriorityQueue<Pair<Integer, Pair<Integer, Integer>>>();
+        PriorityQueue<Pair<Double, Pair<Integer, Integer>>> pqf = new PriorityQueue<Pair<Double, Pair<Integer, Integer>>>();
+        PriorityQueue<Pair<Double, Pair<Integer, Integer>>> pqb = new PriorityQueue<Pair<Double, Pair<Integer, Integer>>>();
         Integer parentf[] = new Integer[numberOfNodes + 2];
         Integer parentb[] = new Integer[numberOfNodes + 2];
         Arrays.fill(parentf, -1);
         Arrays.fill(parentb, -1);
+        Double dis1, dis2;
+        for (int i = 0; i < nodes.size(); i++)
+        {
+            dis1 = comparedis(nodes.elementAt(i).X, nodes.elementAt(i).Y, xSrc, ySrc);
+            if (dis1 <= radius * radius)
+                pqf.add(new Pair(Math.sqrt(dis1), new Pair(-1, nodes.elementAt(i).ID)));
+            dis2 = comparedis(nodes.elementAt(i).X, nodes.elementAt(i).Y, xDest, yDest);
+            if (dis2 <= radius * radius)
+                pqb.add(new Pair(Math.sqrt(dis1), new Pair(-1, nodes.elementAt(i).ID)));
+        }
+        while (!pqb.isEmpty() || !pqf.isEmpty())
+        {
+               
+        }
     }
     public static void query() throws Exception
     {
@@ -94,7 +112,7 @@ public class DoubleEndDjikestra {
         {
             s = BR.readLine();
             a = s.split(" ");
-            DEJ(Integer.parseInt(a[4]), Integer.parseInt(a[0]), Integer.parseInt(a[2]), Integer.parseInt(a[3]), Integer.parseInt(a[4]));
+            DEDIJ(Integer.parseInt(a[4]), Integer.parseInt(a[0]), Integer.parseInt(a[2]), Integer.parseInt(a[3]), Integer.parseInt(a[4]));
         }
     }
 
