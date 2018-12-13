@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.time.LocalDateTime;
+
 public class Main extends Application {
 
     @Override
@@ -14,8 +16,11 @@ public class Main extends Application {
         primaryStage.setTitle("Mini uber map");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
+        LocalDateTime now = LocalDateTime.now();
         DoubleEndDjikestra DEJ = new DoubleEndDjikestra();
         DEJ.build();
+        DEJ.query();
+        System.out.println((LocalDateTime.now().getSecond() - now.getSecond()) * 1000.0);
     }
 
 
