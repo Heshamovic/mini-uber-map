@@ -16,13 +16,10 @@ public class Main extends Application {
         primaryStage.setTitle("Mini uber map");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
-        LocalDateTime now = LocalDateTime.now();
         DoubleEndDjikestra DEJ = new DoubleEndDjikestra();
         DEJ.build();
-        DEJ.query();
-        System.out.println((LocalDateTime.now().getSecond() - now.getSecond()) * 1000.0);
+        System.out.println(DEJ.query() + " ms");
     }
-
 
     public static void main(String[] args) {
         launch(args);

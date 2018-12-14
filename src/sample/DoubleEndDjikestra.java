@@ -4,12 +4,10 @@ import javafx.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Vector;
-import java.util.function.DoubleBinaryOperator;
 
 public class DoubleEndDjikestra {
     public static class pnode implements Comparable<pnode>
@@ -30,14 +28,22 @@ public class DoubleEndDjikestra {
             return this.time.compareTo(other.time);
         }
     }
-    private static Integer numberOfNodes, numberOfEdges, numberOfQueries, to;
-    private static Vector<node> nodes = new Vector<node>();
-    private static Vector<Vector<Pair<Integer, Pair<Double, Double>>>> edges = new Vector<Vector<Pair<Integer, Pair<Double, Double>>>>();
-    DoubleEndDjikestra(){}
-    public static class node {
+    public static class enode
+    {
+        public double velocity, distance;
+        public Integer id;
+        public enode(Integer i, double d, double v)
+        {
+            this.velocity = v;
+            this.distance = d;
+            this.id = i;
+        }
+    }
+    public static class node
+    {
         int ID;
-        Double X;
-        Double Y;
+        double X;
+        double Y;
         node(int id, double x, double y)
         {
             this.ID = id;
@@ -59,19 +65,27 @@ public class DoubleEndDjikestra {
         {
             intersectionNode = 0;
             shortestTime = Double.MAX_VALUE;
-            totalDist = 0.0;
+            totalDist = Double.MAX_VALUE;
             totalWalkingDest = 0.0;
             totalVehicleDest = 0.0;
             path = new Vector<Integer>();
         }
     }
-    public static Double calcdis(Double x1, Double y1, Double x2, Double y2)
+    private static Integer numberOfNodes, numberOfEdges, numberOfQueries;
+    private static Vector<node> nodes;
+    private static Vector<Vector<enode>> edges;
+    DoubleEndDjikestra(){
+        nodes = new Vector<node>();
+        edges = new Vector<Vector<enode>>();
+        numberOfEdges = numberOfNodes = numberOfQueries = 0;
+    }
+    public static double calcdis(Double x1, Double y1, Double x2, Double y2)
     {
-        return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
     public static void build() throws Exception
     {
-        FileReader FR = new FileReader("Samples/SampleCases/map3.txt");
+        FileReader FR = new FileReader("Samples/LargeCases/SFMap.txt");
         BufferedReader BR = new BufferedReader(FR);
         String s = BR.readLine();
         String a[] = new String[3];
@@ -88,15 +102,15 @@ public class DoubleEndDjikestra {
         a = new String[4];
         edges.setSize(numberOfNodes + 1);
         for (int i = 0; i < numberOfNodes; i++)
-            edges.add(i, new Vector<Pair<Integer, Pair<Double, Double>>>());
+            edges.add(i, new Vector<enode>());
         for (int i = 0; i < numberOfEdges; i++)
         {
             s = BR.readLine();
             a = s.split(" ");
-            Pair<Integer, Pair<Double, Double>> n1;
-            n1 = new Pair(Integer.parseInt(a[1]), new Pair(Double.parseDouble(a[2]), Double.parseDouble(a[3])));
+            enode n1;
+            n1 = new enode(Integer.parseInt(a[1]), Double.parseDouble(a[2]), Double.parseDouble(a[3]));
             edges.elementAt(Integer.parseInt(a[0])).add(n1);
-            n1 = new Pair(Integer.parseInt(a[0]), new Pair(Double.parseDouble(a[2]), Double.parseDouble(a[3])));
+            n1 = new enode(Integer.parseInt(a[0]), Double.parseDouble(a[2]), Double.parseDouble(a[3]));
             edges.elementAt(Integer.parseInt(a[1])).add(n1);
         }
     }
@@ -108,35 +122,35 @@ public class DoubleEndDjikestra {
         Integer parentb[] = new Integer[numberOfNodes + 2];
         Boolean visf[] = new Boolean[numberOfNodes + 2];
         Boolean visb[] = new Boolean[numberOfNodes + 2];
-        Double costf[] = new Double[numberOfNodes + 2];
-        Double costb[] = new Double[numberOfNodes + 2];
-        Double costfd[] = new Double[numberOfNodes + 2];
-        Double costbd[] = new Double[numberOfNodes + 2];
+        double costf[] = new double[numberOfNodes + 2];
+        double costb[] = new double[numberOfNodes + 2];
+        double costfd[] = new double[numberOfNodes + 2];
+        double costbd[] = new double[numberOfNodes + 2];
         Arrays.fill(parentf, -1);
         Arrays.fill(parentb, -1);
         Arrays.fill(visf, false);
         Arrays.fill(visb, false);
-        Arrays.fill(costf, 1000000000.0);
-        Arrays.fill(costb, 1000000000.0);
-        Arrays.fill(costfd, 1000000000.0);
-        Arrays.fill(costbd, 1000000000.0);
+        Arrays.fill(costf, Double.MAX_VALUE / 10.0);
+        Arrays.fill(costb, Double.MAX_VALUE / 10.0);
+        Arrays.fill(costfd, Double.MAX_VALUE / 10.0);
+        Arrays.fill(costbd, Double.MAX_VALUE / 10.0);
         pnode fnode, bnode;
-        Double dis1, dis2;
+        double dis1, dis2, mue = Double.MAX_VALUE;
         for (int i = 0; i < nodes.size(); i++)
         {
             dis1 = calcdis(nodes.elementAt(i).X, nodes.elementAt(i).Y, xSrc, ySrc);
-            if (dis1 <= radius * radius)
+            if (dis1 <= radius)
             {
-                pqf.add(new pnode(Math.sqrt(dis1) / 5.0, Math.sqrt(dis1), -1, nodes.elementAt(i).ID));
-                costf[nodes.elementAt(i).ID] = Math.sqrt(dis1) / 5.0;
-                costfd[nodes.elementAt(i).ID] = Math.sqrt(dis1);
+                pqf.add(new pnode(dis1 / 5.0, dis1, -1, nodes.elementAt(i).ID));
+                costf[nodes.elementAt(i).ID] = dis1 / 5.0;
+                costfd[nodes.elementAt(i).ID] = dis1;
             }
             dis2 = calcdis(nodes.elementAt(i).X, nodes.elementAt(i).Y, xDest, yDest);
-            if (dis2 <= radius * radius)
+            if (dis2 <= radius)
             {
-                pqb.add(new pnode(Math.sqrt(dis2) / 5.0, Math.sqrt(dis2), -1, nodes.elementAt(i).ID));
-                costb[nodes.elementAt(i).ID] = Math.sqrt(dis2) / 5.0;
-                costbd[nodes.elementAt(i).ID] = Math.sqrt(dis2);
+                pqb.add(new pnode(dis2 / 5.0, dis2, -1, nodes.elementAt(i).ID));
+                costb[nodes.elementAt(i).ID] = dis2 / 5.0;
+                costbd[nodes.elementAt(i).ID] = dis2;
             }
         }
         while (!pqb.isEmpty() && !pqf.isEmpty())
@@ -145,25 +159,25 @@ public class DoubleEndDjikestra {
             pqf.poll();
             bnode = pqb.peek();
             pqb.poll();
-            if (costb[fnode.nod] != 1000000000.0 && costf[fnode.nod] != 1000000000.0)
+            if (costb[bnode.nod] + costf[fnode.nod] >= mue)
                 break;
-            else if (costb[bnode.nod] != 1000000000.0 && costf[bnode.nod] != 1000000000.0)
-                break;
+            if (costf[fnode.nod] + costb[bnode.nod] + costb[fnode.nod] + costf[bnode.nod] < mue)
+                mue = costf[fnode.nod] + costb[bnode.nod] +  + costb[fnode.nod] + costf[bnode.nod];
             if (!visf[fnode.nod])
             {
                 for (int i = 0; i < edges.elementAt(fnode.nod).size(); i++)
                 {
-                    dis2 = edges.elementAt(fnode.nod).elementAt(i).getValue().getKey();
-                    dis1 = edges.elementAt(fnode.nod).elementAt(i).getValue().getKey() /
-                            edges.elementAt(fnode.nod).elementAt(i).getValue().getValue();
-                    if (dis1 + fnode.time < costf[edges.elementAt(fnode.nod).elementAt(i).getKey()] ||
-                            (dis1 + fnode.time == costf[edges.elementAt(fnode.nod).elementAt(i).getKey()] &&
-                             dis2 + fnode.distance < costfd[edges.elementAt(fnode.nod).elementAt(i).getKey()]))
+                    dis2 = edges.elementAt(fnode.nod).elementAt(i).distance;
+                    dis1 = edges.elementAt(fnode.nod).elementAt(i).distance /
+                            edges.elementAt(fnode.nod).elementAt(i).velocity;
+                    if (dis1 + fnode.time < costf[edges.elementAt(fnode.nod).elementAt(i).id] ||
+                            (dis1 + fnode.time == costf[edges.elementAt(fnode.nod).elementAt(i).id] &&
+                             dis2 + fnode.distance < costfd[edges.elementAt(fnode.nod).elementAt(i).id]))
                     {
-                        costf[edges.elementAt(fnode.nod).elementAt(i).getKey()] = dis1 + fnode.time;
-                        costfd[edges.elementAt(fnode.nod).elementAt(i).getKey()] = dis2 + fnode.distance;
-                        pqf.add(new pnode(dis1 + fnode.time, dis2 + fnode.distance, fnode.nod, edges.elementAt(fnode.nod).elementAt(i).getKey()));
-                        parentf[edges.elementAt(fnode.nod).elementAt(i).getKey()] = fnode.nod;
+                        costf[edges.elementAt(fnode.nod).elementAt(i).id] = dis1 + fnode.time;
+                        costfd[edges.elementAt(fnode.nod).elementAt(i).id] = dis2 + fnode.distance;
+                        pqf.add(new pnode(dis1 + fnode.time, dis2 + fnode.distance, fnode.nod, edges.elementAt(fnode.nod).elementAt(i).id));
+                        parentf[edges.elementAt(fnode.nod).elementAt(i).id] = fnode.nod;
                     }
                 }
             }
@@ -171,17 +185,17 @@ public class DoubleEndDjikestra {
             {
                 for (int i = 0; i < edges.elementAt(bnode.nod).size(); i++)
                 {
-                    dis2 = edges.elementAt(bnode.nod).elementAt(i).getValue().getKey();
-                    dis1 = edges.elementAt(bnode.nod).elementAt(i).getValue().getKey() /
-                            edges.elementAt(bnode.nod).elementAt(i).getValue().getValue();
-                    if (dis1 + bnode.time < costb[edges.elementAt(bnode.nod).elementAt(i).getKey()] ||
-                            (dis1 + bnode.time == costb[edges.elementAt(bnode.nod).elementAt(i).getKey()] &&
-                                    dis2 + bnode.distance < costbd[edges.elementAt(bnode.nod).elementAt(i).getKey()]))
+                    dis2 = edges.elementAt(bnode.nod).elementAt(i).distance;
+                    dis1 = edges.elementAt(bnode.nod).elementAt(i).distance /
+                            edges.elementAt(bnode.nod).elementAt(i).velocity;
+                    if (dis1 + bnode.time < costb[edges.elementAt(bnode.nod).elementAt(i).id] ||
+                            (dis1 + bnode.time == costb[edges.elementAt(bnode.nod).elementAt(i).id] &&
+                                    dis2 + bnode.distance < costbd[edges.elementAt(bnode.nod).elementAt(i).id]))
                     {
-                        costb[edges.elementAt(bnode.nod).elementAt(i).getKey()] = dis1 + bnode.time;
-                        costbd[edges.elementAt(bnode.nod).elementAt(i).getKey()] = dis2 + bnode.distance;
-                        pqb.add(new pnode(dis1 + bnode.time, dis2 + bnode.distance, bnode.nod, edges.elementAt(bnode.nod).elementAt(i).getKey()));
-                        parentb[edges.elementAt(bnode.nod).elementAt(i).getKey()] = bnode.nod;
+                        costb[edges.elementAt(bnode.nod).elementAt(i).id] = dis1 + bnode.time;
+                        costbd[edges.elementAt(bnode.nod).elementAt(i).id] = dis2 + bnode.distance;
+                        pqb.add(new pnode(dis1 + bnode.time, dis2 + bnode.distance, bnode.nod, edges.elementAt(bnode.nod).elementAt(i).id));
+                        parentb[edges.elementAt(bnode.nod).elementAt(i).id] = bnode.nod;
                     }
                 }
             }
@@ -195,6 +209,13 @@ public class DoubleEndDjikestra {
             {
                 QA.shortestTime = costb[i] + costf[i];
                 QA.intersectionNode = i;
+                QA.totalDist = costbd[i] + costfd[i];
+            }
+            else if (QA.shortestTime == costb[i] + costf[i] && QA.totalDist >= costbd[i] + costfd[i])
+            {
+                QA.shortestTime = costb[i] + costf[i];
+                QA.intersectionNode = i;
+                QA.totalDist = costbd[i] + costfd[i];
             }
         }
         Integer internode = QA.intersectionNode;
@@ -215,44 +236,35 @@ public class DoubleEndDjikestra {
             QA.path.add(parentb[internode]);
             internode = parentb[internode];
         }
-        dis1 = 0.0;
-        for (int i = 0; i < QA.path.size() - 1; i++)
-        {
-            for (int j = 0; j < edges.elementAt(QA.path.elementAt(i)).size(); j++)
-                if (edges.elementAt(QA.path.elementAt(i)).elementAt(j).getKey() == QA.path.elementAt(i + 1))
-                {
-                    dis1 = edges.elementAt(QA.path.elementAt(i)).elementAt(j).getValue().getKey();
-                    break;
-                }
-            QA.totalDist += dis1;
-        }
-        QA.totalWalkingDest += Math.sqrt(calcdis(nodes.elementAt(QA.path.lastElement()).X, nodes.elementAt(QA.path.lastElement()).Y, xDest, yDest));
-        QA.totalWalkingDest += Math.sqrt(calcdis(nodes.elementAt(QA.path.firstElement()).X, nodes.elementAt(QA.path.firstElement()).Y, xSrc, ySrc));
-        QA.totalDist += QA.totalWalkingDest;
-        System.out.println(String.format("%.2f", QA.shortestTime * 60.0));
-        System.out.println(String.format("%.2f", QA.totalDist));
-        System.out.println(String.format("%.2f", QA.totalWalkingDest));
-        System.out.println(String.format("%.2f", QA.totalDist - QA.totalWalkingDest));
+        QA.totalWalkingDest += calcdis(nodes.elementAt(QA.path.lastElement()).X, nodes.elementAt(QA.path.lastElement()).Y, xDest, yDest);
+        QA.totalWalkingDest += calcdis(nodes.elementAt(QA.path.firstElement()).X, nodes.elementAt(QA.path.firstElement()).Y, xSrc, ySrc);
+        System.out.println(String.format("%.2f", QA.shortestTime * 60.0) + " mins");
+        System.out.println(String.format("%.2f", QA.totalDist) + " km");
+        System.out.println(String.format("%.2f", QA.totalWalkingDest) + " km");
+        System.out.println(String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km");
         for (int i = 0; i < QA.path.size(); i++)
             System.out.print(QA.path.elementAt(i) + " ");
         System.out.println();
     }
-    public static void query() throws Exception
+    public static long query() throws Exception
     {
-        FileReader FR = new FileReader("Samples/SampleCases/queries3.txt");
+        long totalTime = 0;
+        FileReader FR = new FileReader("Samples/LargeCases/SFQueries.txt");
         BufferedReader BR = new BufferedReader(FR);
         String s = BR.readLine(), a[] = new String[5];
         numberOfQueries = Integer.parseInt(s);
         for (int i = 0; i < numberOfQueries; i++)
         {
-            LocalDateTime now = LocalDateTime.now();
+            long now = System.currentTimeMillis();
             s = BR.readLine();
             a = s.split(" ");
-            DEDIJ(Double.parseDouble(a[4]) / 1000, Double.parseDouble(a[0]), Double.parseDouble(a[1])
+            DEDIJ(Double.parseDouble(a[4]) / 1000.0, Double.parseDouble(a[0]), Double.parseDouble(a[1])
                     , Double.parseDouble(a[2]), Double.parseDouble(a[3]));
-            System.out.println((LocalDateTime.now().getSecond() - now.getSecond()) * 1000.0);
+            now = System.currentTimeMillis() - now;
+            System.out.println(now + " ms");
             System.out.println();
+            totalTime += now;
         }
+        return totalTime;
     }
-
 }
