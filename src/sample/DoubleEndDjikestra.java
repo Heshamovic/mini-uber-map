@@ -1,11 +1,8 @@
 package sample;
 
 import javafx.scene.control.ListView;
-import javafx.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Vector;
@@ -84,6 +81,10 @@ public class DoubleEndDjikestra {
     {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
+    public static double calcdis2(Double x1, Double y1, Double x2, Double y2)
+    {
+        return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+    }
     public static void build(FileReader FR) throws Exception
     {
         BufferedReader BR = new BufferedReader(FR);
@@ -114,6 +115,13 @@ public class DoubleEndDjikestra {
             edges.elementAt(Integer.parseInt(a[1])).add(n1);
         }
     }
+    public static boolean DCMP(double a, double b)
+    {
+        if(Math.abs(a - b) <= 1e-6)
+            return true;
+        return false;
+    }
+    public static Vector<String>lines = new Vector<String>();
     public static String DEDIJ(Double radius, Double xSrc, Double ySrc, Double xDest, Double yDest)
     {
         String ret;
@@ -139,16 +147,18 @@ public class DoubleEndDjikestra {
         double dis1, dis2, mue = Double.MAX_VALUE;
         for (int i = 0; i < nodes.size(); i++)
         {
-            dis1 = calcdis(nodes.elementAt(i).X, nodes.elementAt(i).Y, xSrc, ySrc);
-            if (dis1 <= radius)
+            dis1 = calcdis2(nodes.elementAt(i).X, nodes.elementAt(i).Y, xSrc, ySrc);
+            if (dis1 <= radius * radius)
             {
+                dis1 = calcdis(nodes.elementAt(i).X, nodes.elementAt(i).Y, xSrc, ySrc);
                 pqf.add(new pnode(dis1 / 5.0, dis1, -1, nodes.elementAt(i).ID));
                 costf[nodes.elementAt(i).ID] = dis1 / 5.0;
                 costfd[nodes.elementAt(i).ID] = dis1;
             }
-            dis2 = calcdis(nodes.elementAt(i).X, nodes.elementAt(i).Y, xDest, yDest);
-            if (dis2 <= radius)
+            dis2 = calcdis2(nodes.elementAt(i).X, nodes.elementAt(i).Y, xDest, yDest);
+            if (dis2 <= radius * radius)
             {
+                dis2 = calcdis(nodes.elementAt(i).X, nodes.elementAt(i).Y, xDest, yDest);
                 pqb.add(new pnode(dis2 / 5.0, dis2, -1, nodes.elementAt(i).ID));
                 costb[nodes.elementAt(i).ID] = dis2 / 5.0;
                 costbd[nodes.elementAt(i).ID] = dis2;
@@ -163,7 +173,7 @@ public class DoubleEndDjikestra {
             if (costb[bnode.nod] + costf[fnode.nod] >= mue)
                 break;
             if (costf[fnode.nod] + costb[bnode.nod] + costb[fnode.nod] + costf[bnode.nod] < mue)
-                mue = costf[fnode.nod] + costb[bnode.nod] +  + costb[fnode.nod] + costf[bnode.nod];
+                mue = costf[fnode.nod] + costb[bnode.nod] + costb[fnode.nod] + costf[bnode.nod];
             if (!visf[fnode.nod])
             {
                 for (int i = 0; i < edges.elementAt(fnode.nod).size(); i++)
@@ -172,7 +182,7 @@ public class DoubleEndDjikestra {
                     dis1 = edges.elementAt(fnode.nod).elementAt(i).distance /
                             edges.elementAt(fnode.nod).elementAt(i).velocity;
                     if (dis1 + fnode.time < costf[edges.elementAt(fnode.nod).elementAt(i).id] ||
-                            (dis1 + fnode.time == costf[edges.elementAt(fnode.nod).elementAt(i).id] &&
+                            (DCMP(dis1 + fnode.time, costf[edges.elementAt(fnode.nod).elementAt(i).id]) &&
                              dis2 + fnode.distance < costfd[edges.elementAt(fnode.nod).elementAt(i).id]))
                     {
                         costf[edges.elementAt(fnode.nod).elementAt(i).id] = dis1 + fnode.time;
@@ -190,7 +200,7 @@ public class DoubleEndDjikestra {
                     dis1 = edges.elementAt(bnode.nod).elementAt(i).distance /
                             edges.elementAt(bnode.nod).elementAt(i).velocity;
                     if (dis1 + bnode.time < costb[edges.elementAt(bnode.nod).elementAt(i).id] ||
-                            (dis1 + bnode.time == costb[edges.elementAt(bnode.nod).elementAt(i).id] &&
+                            (DCMP(dis1 + bnode.time, costb[edges.elementAt(bnode.nod).elementAt(i).id]) &&
                                     dis2 + bnode.distance < costbd[edges.elementAt(bnode.nod).elementAt(i).id]))
                     {
                         costb[edges.elementAt(bnode.nod).elementAt(i).id] = dis1 + bnode.time;
@@ -200,7 +210,8 @@ public class DoubleEndDjikestra {
                     }
                 }
             }
-            visf[fnode.nod] = visb[bnode.nod] = true;
+            visf[fnode.nod] = true;
+            visb[bnode.nod] = true;
         }
         fnode = new pnode(0.0, 0.0, 0, 0);
         QueryAns QA = new QueryAns();
@@ -243,16 +254,23 @@ public class DoubleEndDjikestra {
                 + String.format("%.2f", QA.totalDist) + " km, "
                 + String.format("%.2f", QA.totalWalkingDest) + " km, "
                 + String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km.";
-       /* System.out.println(String.format("%.2f", QA.shortestTime * 60.0) + " mins");
-        System.out.println(String.format("%.2f", QA.totalDist) + " km");
-        System.out.println(String.format("%.2f", QA.totalWalkingDest) + " km");
-        System.out.println(String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km");
-        for (int i = 0; i < QA.path.size(); i++)
-            System.out.print(QA.path.elementAt(i) + " ");
-        System.out.println();*/
-       return ret;
+
+        lines.add(String.format("%.2f", QA.shortestTime * 60.0) + " mins");
+        lines.add(String.format("%.2f", QA.totalDist) + " km");
+        lines.add(String.format("%.2f", QA.totalWalkingDest) + " km");
+        lines.add(String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km");
+
+        String s = new String();
+        for (int i = 0; i < QA.path.size(); i++){
+            s += QA.path.elementAt(i);
+            if(i != QA.path.size() - 1)
+                s += " ";
+        }
+        lines.add(s);
+        return ret;
     }
     public static ListView<String> LV= new ListView<String>();
+    public static ListView<String> timeL= new ListView<String>();
     public static long query(FileReader FR) throws Exception
     {
         long totalTime = 0;
@@ -268,8 +286,7 @@ public class DoubleEndDjikestra {
             DEDIJ(Double.parseDouble(a[4]) / 1000.0, Double.parseDouble(a[0]), Double.parseDouble(a[1])
                     , Double.parseDouble(a[2]), Double.parseDouble(a[3])));
             now = System.currentTimeMillis() - now;
-            System.out.println(now + " ms");
-            System.out.println();
+            timeL.getItems().add(Long.toString(now));
             totalTime += now;
         }
         return totalTime;
