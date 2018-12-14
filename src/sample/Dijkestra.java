@@ -1,301 +1,233 @@
 package sample;
 
 import javafx.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Arrays;
 import java.util.PriorityQueue;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class Dijkestra {
 
-    public static class dijsktra
+    public static class dijkstra
     {
-        int []parent ;
-        double []cost ;
-        int no_nodes , edges , query ;
-        double totalwalk,totaldrive;
-        Double x1 , y1 , x2 ,y2 , R ;
-        PriorityQueue<Entry> dij ;
-        Vector<node> nodes ;
-        Vector<Integer> path ;
-        dijsktra()
+        public static FileReader FR;
+        public static BufferedReader BR;
+        private static int num_nodes , edges , query ;
+        private static double totalwalk , totaldrive ;
+        private static Vector<Node> nodes;
+        private static Vector<Integer> path;
+        private static PriorityQueue<pnode> pq;
+        private static int [] parent ;
+        private static double [] cost, costdis ;
+        private static double x1,y1,x2,y2,R;
+        dijkstra()
         {
-            edges = 0 ;
-            no_nodes = 0 ;
-            query = 0 ;
-            dij = new PriorityQueue<Entry>();
-            nodes = new Vector<node>(100005);
+            totalwalk = 0;
+            totaldrive = 0;
+            nodes = new Vector<Node>();
             nodes.setSize(100005);
+            pq = new PriorityQueue<pnode>();
+            parent = new int[100005];
+            cost = new double[100005];
+            costdis = new double[100005];
             path = new Vector<Integer>();
-            totalwalk=0;
-            totaldrive=0;
         }
-        void init()
+        private static void init()
         {
-            parent = new int[no_nodes+2];
-            for(int i=0 ; i<no_nodes+2 ; i++)
-            {
-                parent[i] = i ;
-            }
-            cost = new double[no_nodes+2] ;
-            for(int i=0 ; i<no_nodes+2 ; i++)
-            {
-                cost[i] = 1000000000 ;
-            }
-            dij = new PriorityQueue<Entry>() ;
+            Arrays.fill(parent, -1);
+            Arrays.fill(costdis, Double.MAX_VALUE / 10);
+            Arrays.fill(cost, Double.MAX_VALUE / 10);
+            pq.clear();
+            totalwalk = totaldrive = 0;
             path.clear();
-            totaldrive=0;
-            totalwalk=0;
         }
-        void node_input()
+        public static void getinputnode() throws Exception
         {
-            for(int i=0 ; i<no_nodes ; i++)
-            {
-                node newnode = new node();
-                Scanner in = new Scanner(System.in);
-                newnode.id = in.nextInt();
-                newnode.x = in.nextDouble();
-                newnode.y = in.nextDouble();
-                nodes.add(newnode.id,newnode);
+            FR = new FileReader("Samples/MediumCases/OLMap.txt");
+            BR = new BufferedReader(FR);
+            String s = BR.readLine();
+            num_nodes = Integer.parseInt(s);
+            String [] a = new String[3];
 
+            for (int i = 0; i < num_nodes; i++)
+            {
+                Node newnode = new Node();
+                s = BR.readLine();
+                a = s.split(" ");
+                newnode.id = Integer.parseInt(a[0]);
+                newnode.x = Double.parseDouble(a[1]);
+                newnode.y = Double.parseDouble(a[2]);
+                nodes.add(newnode.id, newnode);
             }
         }
-        void displayale ()
+        public void getinputedges () throws Exception
         {
-
-        }
-
-        void edge_input()
-        {
-            for(int i=0 ; i<edges ; i++)
+            String s = BR.readLine();
+            edges = Integer.parseInt(s);
+            String [] a = new String[4];
+            int node1, node2;
+            double len, vel, time;
+            for (int i = 0; i < edges; i++)
             {
-                int node1 , node2 ;
-                Double vel , dis , time ;
-                Scanner in = new Scanner(System.in);
-                node1 = in.nextInt();
-                node2 = in.nextInt();
-                vel = in.nextDouble();
-                dis = in.nextDouble();
-                time = (dis/vel);
-                nodes.elementAt(node1).distance[node2] = dis ;
-                nodes.elementAt(node2).distance[node1] = dis ;
-                // nodes.elementAt(node1).distance.elementAt(node2).equals(dis);
-                //  nodes.elementAt(node2).distance.elementAt(node1).equals(dis);
-                System.out.println(nodes.elementAt(3).distance[2]);
-                //  System.out.println(nodes.elementAt(node2).distance.elementAt(node1));
-                //  System.out.println(nodes.get(node2).distance.elementAt(node1) + " " + nodes.get(node1).distance.elementAt(node2));
-                nodes.elementAt(node1).add(node2,time);
-                nodes.elementAt(node2).add(node1,time);
+                s = BR.readLine();
+                a = s.split(" ");
+                node1 = Integer.parseInt(a[0]);
+                node2 = Integer.parseInt(a[1]);
+                len = Double.parseDouble(a[2]);
+                vel = Double.parseDouble(a[3]);
+                time = len / vel;
+                Pair<Double,Double> pp = new Pair<Double,Double>(time, len);
+                Pair<Integer, Pair<Double,Double>> chi = new Pair<Integer, Pair<Double,Double>>(node2, pp);
+                nodes.elementAt(node1).child.add(chi);
+                chi = new  Pair<Integer, Pair<Double,Double>>(node1, pp);
+                nodes.elementAt(node2).child.add(chi);
             }
         }
-
-        String lines[];
-        public void getInput()throws Exception
+        public  long solve() throws Exception
         {
-            try{
-                FileReader file = new FileReader("/C:/Users/user/Desktop/map1.txt");
-                BufferedReader bf = new BufferedReader(file);
-
-                no_nodes = Integer.parseInt(bf.readLine());
-                String s = bf.readLine();
-                for(int i = 0 ; i < no_nodes;i++)
-                {
-                    System.out.println(s);
-                    lines = new String[3];
-                    lines = s.split(" ");
-                    nodes.get(Integer.parseInt(lines[0])).x = Double.parseDouble(lines[1]);
-                    nodes.get(Integer.parseInt(lines[0])).y = Double.parseDouble(lines[2]);
-                    //  System.out.println(s);
-                    s = bf.readLine();
-                }
-                for(int i = 0 ; i < no_nodes;i++)
-                    System.out.println(nodes.get(i).x + ' ' + nodes.get(i).y);
-            }catch (Exception e)
+            FR = new FileReader("Samples/MediumCases/OLQueries.txt");
+            BufferedReader BR = new BufferedReader(FR);
+            String s = BR.readLine();
+            String []a = new String[5];
+            query = Integer.parseInt(s);
+            long Totaltime = 0;
+            for (int i=0;i<query;i++)
             {
-
-                System.out.println(e + "a7a");
-            }
-        }
-        int solve()throws Exception
-        {
-            getInput();
-           /* System.out.println("Enter id , X-axis and Y-axis of nodes : ");
-            node_input();
-            System.out.println("Enter the number of edges : ");
-            edges = in.nextInt();
-            edge_input();
-            System.out.println("Enter the number of queries : ");
-            query = in.nextInt();
-
-            for(int i=0 ; i<query ; i++)
-            {
+                long querytime = System.currentTimeMillis();
                 init();
-                System.out.println("Enter X1 , Y1 , X2 , Y2 and R : ");
-                x1 = in.nextDouble() ;
-                y1 = in.nextDouble() ;
-                x2 = in.nextDouble() ;
-                y2 = in.nextDouble() ;
-                R = in.nextDouble() ;
-                getsources();
-                build();
-                getpath(getdest());
-              //  displayale();
-                display();
-
-            }*/
-            return 1;
-        }
-        void display()
-        {
-            for(int i=path.size()-1 ; i>=0 ; i--)
-            {
-                System.out.print(path.elementAt(i)+" " );
+                s = BR.readLine();
+                a = s.split(" ");
+                x1 = Double.parseDouble(a[0]);
+                y1 = Double.parseDouble(a[1]);
+                x2 = Double.parseDouble(a[2]);
+                y2 = Double.parseDouble(a[3]);
+                R = Double.parseDouble(a[4]);
+                R/=1000.0;
+                beready();
+                run();
+                end();
+                querytime = System.currentTimeMillis() - querytime;
+                Totaltime += querytime;
+                System.out.println(querytime + " ms");
             }
-            System.out.println();
-            //  System.out.println(nodes.elementAt(3).distance.elementAt(2));
-            for(int i=0;i<path.size()-1;i++)
-            {
-                // System.out.println(path.get(i+1));
-                // System.out.println(nodes.elementAt(path.get(i)).distance.get(path.get(i+1)));
-                System.out.println();
-                totaldrive+=(nodes.get(path.elementAt(i)).distance[path.elementAt(i+1)]);
-            }
-            System.out.println(totaldrive);
-            System.out.println();
+            return Totaltime;
         }
-        void getpath(int end)
+        private static double displacement(double x11,double y11,double x22,double y22)
         {
-            totalwalk = Math.sqrt( Math.pow( Math.abs(x2-nodes.elementAt(end).x) ,2) + Math.pow( Math.abs(y2-nodes.elementAt(end).y) ,2) );
-            path.add(end);
-            while(parent[end]!=end)
-            {
-                path.add(parent[end]);
-
-                end = parent[end];
-            }
-            totalwalk+= Math.sqrt( Math.pow( Math.abs(x2-nodes.elementAt(end).x) ,2) + Math.pow( Math.abs(y2-nodes.elementAt(end).y) ,2) );
+            return Math.sqrt((y22 - y11) * (y22 - y11) +(x22 - x11) * (x22 - x11));
         }
-        int  getdest()
+        private static void beready()
         {
-            double mn = 1000000000 ;
-            int ind = -1 ;
-            for(int i=0 ; i<no_nodes ; i++)
+            for (int i = 0; i < num_nodes; i++)
             {
-                double dis = Math.sqrt( Math.pow( Math.abs(x2-nodes.elementAt(i).x) ,2) + Math.pow( Math.abs(y2-nodes.elementAt(i).y) ,2) );
-                // System.out.println(dis);
-                if(dis<=R)
+                double xnode = nodes.get(i).x;
+                double ynode = nodes.get(i).y;
+                double res = displacement(x1, y1, xnode, ynode);
+                if (res<=R)
                 {
-                    // System.out.println(ind + " index here "+ mn);
-                    double time = dis / 5.0 ;
-                    if(time<mn)
+                    double time = res/5.0;
+                    pnode hob= new pnode(time, res, i);
+                    parent[i] = -1;
+                    costdis[i] = res;
+                    cost[i] = res / 5.0;
+                    pq.add(hob);
+                }
+            }
+        }
+        private static void run()
+        {
+            while (!pq.isEmpty())
+            {
+                int newnode = pq.peek().nod;
+                double newnodecost = pq.peek().time;
+                double newnodedis = pq.peek().distance;
+                pq.poll();
+                for (int i = 0; i < nodes.elementAt(newnode).child.size(); i++)
+                {
+                    int nei = nodes.elementAt(newnode).child.elementAt(i).getKey();
+                    double neicost = nodes.elementAt(newnode).child.elementAt(i).getValue().getKey();
+                    double neidest = nodes.elementAt(newnode).child.elementAt(i).getValue().getValue();
+                    if ((neicost + newnodecost < cost[nei]) ||
+                        (neicost + newnodecost == cost[nei] && neidest + newnodedis < costdis[nei]))
+                    {
+                        cost[nei] = neicost + newnodecost;
+                        costdis[nei] = neidest + newnodedis;
+                        pnode NEW = new pnode(cost[nei], costdis[nei], nei);
+                        parent[nei] = newnode;
+                        pq.add(NEW);
+                    }
+                }
+            }
+        }
+        private static void end()
+        {
+            int ind = 0;
+            double mn = 1000000005;
+            for (int i = 0; i < num_nodes; i++)
+            {
+                double xnode = nodes.get(i).x;
+                double ynode = nodes.get(i).y;
+                double res = displacement(x2, y2, xnode, ynode);
+                if (res <= R)
+                {
+                    double time = res/5.0;
+                    if (time + cost[i] < mn)
                     {
                         ind=i;
-                        mn=time;
+                        mn=time+cost[i];
                     }
                 }
             }
-            //  System.out.println(ind);
-            return ind;
-        }
-        void build()
-        {
-            while(dij.size() > 0)
+            double timecost = mn * 60;
+            System.out.println(String.format("%.2f", timecost) + " mins");
+            totaldrive = costdis[ind];
+            while (parent[ind] != -1)
             {
-                int newnode=dij.peek().getValue();
-                double nodecost=dij.peek().getKey();
-                dij.poll();
-                cost[newnode]=nodecost;
-                //  System.out.println(newnode);
-                for (int i=0;i<nodes.elementAt(newnode).child.size();i++)
-                {
-                    int nei=nodes.elementAt(newnode).child.elementAt(i).getKey();
-                    double neicost=nodes.get(newnode).child.elementAt(i).getValue();
-                    if (neicost + nodecost < cost[nei])
-                    {
-                        cost[nei]=neicost + nodecost;
-                        Entry p= new Entry(neicost + nodecost,nei);
-                        dij.add(p);
-                        parent[nei] = newnode ;
-                    }
-
-                }
-
+                path.add(ind);
+                ind = parent[ind];
             }
-
+            path.add(ind);
+            totalwalk += displacement(x1, y1, nodes.elementAt(path.lastElement()).x,nodes.elementAt(path.get(path.size()-1)).y);
+            totaldrive -= totalwalk;
+            totalwalk+=displacement(x2,y2,nodes.elementAt(path.get(0)).x,nodes.elementAt(path.get(0)).y);
+            System.out.println(String.format("%.2f", totalwalk + totaldrive) + " km");
+            System.out.println(String.format("%.2f", totalwalk)+" km");
+            System.out.println(String.format("%.2f", totaldrive) +" km");
+            for (int i = path.size()-1;i>=0;i--)
+                System.out.print(path.elementAt(i) + " " );
+            System.out.println();
         }
-        void getsources()
+
+    }
+    public static class pnode implements Comparable <pnode>
+    {
+        public Double time, distance;
+        public Integer nod;
+        public pnode(Double f, Double x, Integer t)
         {
-            for(int i=0 ; i<no_nodes ; i++)
-            {
-                double dis = Math.sqrt( Math.pow( Math.abs(x1-nodes.get(i).x) ,2) + Math.pow( Math.abs(y1-nodes.get(i).y) ,2) );
-                if(dis<=R)
-                {
-                    double time = dis / 5.0 ;
-                    Entry p = new Entry(time,i);
-                    dij.add(p);
-                }
-            }
+            this.time = f;
+            this.distance = x;
+            this.nod = t;
+        }
+        @Override
+        public int compareTo(pnode other) {
+            if (this.time.compareTo(other.time) == 0)
+                return this.distance.compareTo(other.distance);
+            return this.time.compareTo(other.time);
         }
     }
-    public static class node
+    public static class Node
     {
         int id ;
-        double x , y ;
-        Vector<Pair<Integer,Double>> child ;
-        double []distance ;
-        node()
+        double x, y;
+        Vector<Pair<Integer, Pair<Double,Double>>>child;
+        Node()
         {
-            x = 0 ;
-            y = 0 ;
-            distance = new double [10005];
-            child = new Vector<Pair<Integer,Double>>();
-        }
-        void add(int element,Double cost)
-        {
-            Pair<Integer,Double> p = new Pair<Integer, Double>(element,cost);
-            child.add(p);
-        }
-
-    }
-    public static class Entry implements Comparable<Entry> {
-        public double key;
-        public int value;
-
-        public Entry(double key, int value) {
-            this.key = key;
-            this.value = value;
-        }
-        public double getKey()
-        {
-            return this.key;
-        }
-        public int getValue()
-        {
-            return this.value;
-        }
-        // getters
-
-        @Override
-        public int compareTo(Entry other) {
-            if (this.key==other.key)
-                return  0;
-            if (this.key>other.key)
-                return 1;
-            else
-                return -1;
-        }
-    }
-    public static void main(String[] args)
-    {
-
-        dijsktra problem;
-        problem = new dijsktra();
-        try{
-            problem.solve();
-        }catch (Exception e){
-            System.out.println(e);
+            id = 0;
+            x = 0.0;
+            y = 0.0;
+            child = new Vector<Pair<Integer,Pair<Double,Double>>>();
         }
     }
 

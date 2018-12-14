@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.Dijkestra.dijkstra;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +17,12 @@ public class Main extends Application {
         primaryStage.setTitle("Mini uber map");
         primaryStage.setScene(new Scene(root, 750, 550));
         primaryStage.show();
-        DoubleEndDjikestra DEJ = new DoubleEndDjikestra();
+        dijkstra problem = new dijkstra();
+        problem.getinputnode();
+        problem.getinputedges();
+        System.out.println();
+        System.out.println(problem.solve() + " ms");
+        //DoubleEndDjikestra DEJ = new DoubleEndDjikestra();
        // DEJ.build();
         //System.out.println(DEJ.query() + " ms");
     }
