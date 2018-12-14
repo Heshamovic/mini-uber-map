@@ -20,7 +20,6 @@ public class Dijkestra {
         private static PriorityQueue<pnode> pq;
         private static int [] parent ;
         private static double [] cost, costdis ;
-        private static boolean [] vis;
         private static double x1,y1,x2,y2,R;
         dijkstra()
         {
@@ -33,7 +32,6 @@ public class Dijkestra {
             cost = new double[100005];
             costdis = new double[100005];
             path = new Vector<Integer>();
-            vis = new boolean[2000005];
         }
         private static void init()
         {
@@ -43,7 +41,6 @@ public class Dijkestra {
             pq.clear();
             totalwalk = totaldrive = 0;
             path.clear();
-            vis = new boolean[num_nodes + 5];
         }
         public static void getinputnode() throws Exception
         {
@@ -68,15 +65,17 @@ public class Dijkestra {
             String s = BR.readLine();
             edges = Integer.parseInt(s);
             String [] a = new String[4];
-            for (int i=0;i<edges;i++)
+            int node1, node2;
+            double len, vel, time;
+            for (int i = 0; i < edges; i++)
             {
                 s = BR.readLine();
                 a = s.split(" ");
-                int node1 = Integer.parseInt(a[0]);
-                int node2 = Integer.parseInt(a[1]);
-                double len = Double.parseDouble(a[2]);
-                double vel = Double.parseDouble(a[3]);
-                double time = len / vel;
+                node1 = Integer.parseInt(a[0]);
+                node2 = Integer.parseInt(a[1]);
+                len = Double.parseDouble(a[2]);
+                vel = Double.parseDouble(a[3]);
+                time = len / vel;
                 Pair<Integer, Double> chi = new Pair<>(node2,time);
                 nodes.elementAt(node1).child.add(chi);
                 chi = new Pair<>(node1,time);
