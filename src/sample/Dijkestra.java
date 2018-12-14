@@ -127,7 +127,7 @@ public class Dijkestra {
                 if (res<=R)
                 {
                     double time = res/5.0;
-                    pnode hob= new pnode(time, res, -1, i);
+                    pnode hob= new pnode(time, res, i);
                     parent[i] = -1;
                     costdis[i] = res;
                     cost[i] = res / 5.0;
@@ -153,7 +153,7 @@ public class Dijkestra {
                     {
                         cost[nei] = neicost + newnodecost;
                         costdis[nei] = neidest + newnodedis;
-                        pnode NEW = new pnode(cost[nei], costdis[nei], newnode, nei);
+                        pnode NEW = new pnode(cost[nei], costdis[nei], nei);
                         parent[nei] = newnode;
                         pq.add(NEW);
                     }
@@ -204,12 +204,11 @@ public class Dijkestra {
     public static class pnode implements Comparable <pnode>
     {
         public Double time, distance;
-        public Integer parent, nod;
-        public pnode(Double f, Double x, Integer s, Integer t)
+        public Integer nod;
+        public pnode(Double f, Double x, Integer t)
         {
             this.time = f;
             this.distance = x;
-            this.parent = s;
             this.nod = t;
         }
         @Override
