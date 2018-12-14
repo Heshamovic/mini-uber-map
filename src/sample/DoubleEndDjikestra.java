@@ -252,7 +252,7 @@ public class DoubleEndDjikestra {
         System.out.println();*/
        return ret;
     }
-    public static ListView<String> LV= new ListView<String>();
+    public static ListView<String> LV = new ListView<String>();
     public static long query(FileReader FR) throws Exception
     {
         long totalTime = 0;
