@@ -36,28 +36,29 @@ public class Dijkestra {
         private static void init()
         {
             Arrays.fill(parent, -1);
-            Arrays.fill(costdis, Double.MAX_VALUE);
-            Arrays.fill(cost, Double.MAX_VALUE);
+            Arrays.fill(costdis, Double.MAX_VALUE / 10);
+            Arrays.fill(cost, Double.MAX_VALUE / 10);
             pq.clear();
             totalwalk = totaldrive = 0;
             path.clear();
         }
         public static void getinputnode() throws Exception
         {
-            FR = new FileReader("Samples/SampleCases/map5.txt");
+            FR = new FileReader("Samples/MediumCases/OLMap.txt");
             BR = new BufferedReader(FR);
             String s = BR.readLine();
             num_nodes = Integer.parseInt(s);
             String [] a = new String[3];
-            for (int i = 0; i < num_nodes;i++)
+
+            for (int i = 0; i < num_nodes; i++)
             {
+                Node newnode = new Node();
                 s = BR.readLine();
                 a = s.split(" ");
-                Node newnode = new Node();
                 newnode.id = Integer.parseInt(a[0]);
                 newnode.x = Double.parseDouble(a[1]);
                 newnode.y = Double.parseDouble(a[2]);
-                nodes.add(newnode.id,newnode);
+                nodes.add(newnode.id, newnode);
             }
         }
         public void getinputedges () throws Exception
@@ -76,17 +77,16 @@ public class Dijkestra {
                 len = Double.parseDouble(a[2]);
                 vel = Double.parseDouble(a[3]);
                 time = len / vel;
-                Pair<Integer, Double> chi = new Pair<>(node2,time);
+                Pair<Double,Double> pp = new Pair<Double,Double>(time, len);
+                Pair<Integer, Pair<Double,Double>> chi = new Pair<Integer, Pair<Double,Double>>(node2, pp);
                 nodes.elementAt(node1).child.add(chi);
-                chi = new Pair<>(node1,time);
+                chi = new  Pair<Integer, Pair<Double,Double>>(node1, pp);
                 nodes.elementAt(node2).child.add(chi);
-                nodes.elementAt(node1).distance[node2]=len;
-                nodes.elementAt(node2).distance[node1]=len;
             }
         }
         public  long solve() throws Exception
         {
-            FR = new FileReader("Samples/SampleCases/queries5.txt");
+            FR = new FileReader("Samples/MediumCases/OLQueries.txt");
             BufferedReader BR = new BufferedReader(FR);
             String s = BR.readLine();
             String []a = new String[5];
@@ -146,8 +146,8 @@ public class Dijkestra {
                 for (int i = 0; i < nodes.elementAt(newnode).child.size(); i++)
                 {
                     int nei = nodes.elementAt(newnode).child.elementAt(i).getKey();
-                    double neicost = nodes.elementAt(newnode).child.elementAt(i).getValue();
-                    double neidest = nodes.elementAt(newnode).distance[nei];
+                    double neicost = nodes.elementAt(newnode).child.elementAt(i).getValue().getKey();
+                    double neidest = nodes.elementAt(newnode).child.elementAt(i).getValue().getValue();
                     if ((neicost + newnodecost < cost[nei]) ||
                         (neicost + newnodecost == cost[nei] && neidest + newnodedis < costdis[nei]))
                     {
@@ -159,7 +159,6 @@ public class Dijkestra {
                     }
                 }
             }
-            //return 0;
         }
         private static void end()
         {
@@ -167,31 +166,31 @@ public class Dijkestra {
             double mn = 1000000005;
             for (int i = 0; i < num_nodes; i++)
             {
-                double xnode=nodes.get(i).x;
-                double ynode=nodes.get(i).y;
-                double res = displacement(x2,y2,xnode,ynode);
+                double xnode = nodes.get(i).x;
+                double ynode = nodes.get(i).y;
+                double res = displacement(x2, y2, xnode, ynode);
                 if (res <= R)
                 {
                     double time = res/5.0;
-                    if (time+cost[i]<mn)
+                    if (time + cost[i] < mn)
                     {
                         ind=i;
                         mn=time+cost[i];
                     }
                 }
             }
-            double timecost = mn*60;
+            double timecost = mn * 60;
             System.out.println(String.format("%.2f", timecost) + " mins");
+            totaldrive = costdis[ind];
             while (parent[ind] != -1)
             {
                 path.add(ind);
                 ind = parent[ind];
             }
             path.add(ind);
-            totalwalk += displacement(x1, y1, nodes.elementAt(path.get(path.size()-1)).x,nodes.elementAt(path.get(path.size()-1)).y);
+            totalwalk += displacement(x1, y1, nodes.elementAt(path.lastElement()).x,nodes.elementAt(path.get(path.size()-1)).y);
+            totaldrive -= totalwalk;
             totalwalk+=displacement(x2,y2,nodes.elementAt(path.get(0)).x,nodes.elementAt(path.get(0)).y);
-            for (int i = 0;i < path.size()-1;i++)
-                totaldrive+=(nodes.elementAt(path.get(i)).distance[path.get(i+1)]);
             System.out.println(String.format("%.2f", totalwalk + totaldrive) + " km");
             System.out.println(String.format("%.2f", totalwalk)+" km");
             System.out.println(String.format("%.2f", totaldrive) +" km");
@@ -222,15 +221,13 @@ public class Dijkestra {
     {
         int id ;
         double x, y;
-        Vector<Pair<Integer, Double>>child;
-        double[] distance;
+        Vector<Pair<Integer, Pair<Double,Double>>>child;
         Node()
         {
             id = 0;
             x = 0.0;
             y = 0.0;
-            child = new Vector<Pair<Integer, Double>>();
-            distance = new double[100005];
+            child = new Vector<Pair<Integer,Pair<Double,Double>>>();
         }
     }
 
