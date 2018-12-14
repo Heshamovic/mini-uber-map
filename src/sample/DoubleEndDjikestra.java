@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.scene.control.ListView;
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -83,9 +84,8 @@ public class DoubleEndDjikestra {
     {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
-    public static void build() throws Exception
+    public static void build(FileReader FR) throws Exception
     {
-        FileReader FR = new FileReader("Samples/LargeCases/SFMap.txt");
         BufferedReader BR = new BufferedReader(FR);
         String s = BR.readLine();
         String a[] = new String[3];
@@ -114,8 +114,9 @@ public class DoubleEndDjikestra {
             edges.elementAt(Integer.parseInt(a[1])).add(n1);
         }
     }
-    public static void DEDIJ(Double radius, Double xSrc, Double ySrc, Double xDest, Double yDest)
+    public static String DEDIJ(Double radius, Double xSrc, Double ySrc, Double xDest, Double yDest)
     {
+        String ret;
         PriorityQueue<pnode> pqf = new PriorityQueue<pnode>();
         PriorityQueue<pnode> pqb = new PriorityQueue<pnode>();
         Integer parentf[] = new Integer[numberOfNodes + 2];
@@ -238,28 +239,34 @@ public class DoubleEndDjikestra {
         }
         QA.totalWalkingDest += calcdis(nodes.elementAt(QA.path.lastElement()).X, nodes.elementAt(QA.path.lastElement()).Y, xDest, yDest);
         QA.totalWalkingDest += calcdis(nodes.elementAt(QA.path.firstElement()).X, nodes.elementAt(QA.path.firstElement()).Y, xSrc, ySrc);
-        System.out.println(String.format("%.2f", QA.shortestTime * 60.0) + " mins");
+        ret = String.format("%.2f", QA.shortestTime * 60.0) + " mins, "
+                + String.format("%.2f", QA.totalDist) + " km, "
+                + String.format("%.2f", QA.totalWalkingDest) + " km, "
+                + String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km.";
+       /* System.out.println(String.format("%.2f", QA.shortestTime * 60.0) + " mins");
         System.out.println(String.format("%.2f", QA.totalDist) + " km");
         System.out.println(String.format("%.2f", QA.totalWalkingDest) + " km");
         System.out.println(String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km");
         for (int i = 0; i < QA.path.size(); i++)
             System.out.print(QA.path.elementAt(i) + " ");
-        System.out.println();
+        System.out.println();*/
+       return ret;
     }
-    public static long query() throws Exception
+    public static ListView<String> LV= new ListView<String>();
+    public static long query(FileReader FR) throws Exception
     {
         long totalTime = 0;
-        FileReader FR = new FileReader("Samples/LargeCases/SFQueries.txt");
         BufferedReader BR = new BufferedReader(FR);
         String s = BR.readLine(), a[] = new String[5];
         numberOfQueries = Integer.parseInt(s);
         for (int i = 0; i < numberOfQueries; i++)
         {
-            long now = System.currentTimeMillis();
             s = BR.readLine();
             a = s.split(" ");
+            long now = System.currentTimeMillis();
+            LV.getItems().add("Test #" + (i + 1) + ": " +
             DEDIJ(Double.parseDouble(a[4]) / 1000.0, Double.parseDouble(a[0]), Double.parseDouble(a[1])
-                    , Double.parseDouble(a[2]), Double.parseDouble(a[3]));
+                    , Double.parseDouble(a[2]), Double.parseDouble(a[3])));
             now = System.currentTimeMillis() - now;
             System.out.println(now + " ms");
             System.out.println();
