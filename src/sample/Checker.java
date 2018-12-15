@@ -1,12 +1,12 @@
 package sample;
 
 import javafx.scene.control.ListView;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.Vector;
 import java.io.FileWriter;
+
 public class Checker {
     public static Vector<String>lines = new Vector<String>();
     public static Vector<String>diff = new Vector<String>();

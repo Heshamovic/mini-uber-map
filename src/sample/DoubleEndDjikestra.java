@@ -85,14 +85,17 @@ public class DoubleEndDjikestra {
             path = new Vector<Integer>();
         }
     }
+    //Calculating distance between 2 points
     public static double calcdis(Double x1, Double y1, Double x2, Double y2) // O(1)
     {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
+    //Calculating distance between 2 points squared
     public static double calcdis2(Double x1, Double y1, Double x2, Double y2) // O(1)
     {
         return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
     }
+    //Building the graph (Nodes and Edges)
     public static void build(FileReader FR) throws Exception // O(E + V)
     {
         BufferedReader BR = new BufferedReader(FR);
@@ -123,12 +126,14 @@ public class DoubleEndDjikestra {
             edges.elementAt(Integer.parseInt(a[1])).add(n1);
         }
     }
+    //Double compare
     public static boolean DCMP(double a, double b) // O(1)
     {
         if(Math.abs(a - b) <= 1e-6)
             return true;
         return false;
     }
+    //Bi-directional dijkstra
     public static String DEDIJ(Double radius, Double xSrc, Double ySrc, Double xDest, Double yDest) // O(Elog(V))
     {
         String ret;
@@ -277,6 +282,7 @@ public class DoubleEndDjikestra {
         lines.add(s);
         return ret;
     }
+    //Runs queries
     public static long query(FileReader FR) throws Exception // O(Q)
     {
         long totalTime = 0;

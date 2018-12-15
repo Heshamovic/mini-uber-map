@@ -30,12 +30,6 @@ public class Controller {
     @FXML
     private Label runlbl;
     @FXML
-    private ToggleGroup g1;
-    @FXML
-    private RadioButton biRadio;
-    @FXML
-    private RadioButton normalRadio;
-    @FXML
     public void initialize() {
         status.setText("Not tests yet!");
         statusBall.setFill(Color.GHOSTWHITE);
@@ -45,13 +39,12 @@ public class Controller {
 
     public static Vector<String>vec = new Vector<>();
     public static ListView<String> resultsTMP = new ListView<>();
-
     public static boolean tog = true, showTog = false;
-
     public void toggleRadio(){
         tog = !tog;
     }
-    public void runSampleCase1()throws Exception{
+    public void runSampleCase1()throws Exception
+    {
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
         if(sampleBtn.getValue() == "Sample Case #1")
@@ -65,7 +58,8 @@ public class Controller {
         else if(sampleBtn.getValue() == "Sample Case #5")
             runSampleCase(5);
     }
-    public void runSampleCase(int fileNo)throws Exception{
+    public void runSampleCase(int fileNo)throws Exception
+    {
         if(tog)
         {
             runSampleCaseNormal(fileNo);
@@ -114,8 +108,8 @@ public class Controller {
             vec = check.diff;
         }
     }
-
-    public void runMediumCases()throws Exception{
+    public void runMediumCases()throws Exception
+    {
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
         if(tog)
@@ -168,8 +162,8 @@ public class Controller {
             vec = check.diff;
         }
     }
-
-    public void runLargeCases()throws Exception{
+    public void runLargeCases()throws Exception
+    {
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
         if(tog)
@@ -220,8 +214,8 @@ public class Controller {
             vec = check.diff;
         }
     }
-
-    public void showDiffrences(){
+    public void showDiffrences()
+    {
         resultslist.getItems().clear();
         if(!showTog)
         {
@@ -239,10 +233,9 @@ public class Controller {
         }
         showTog = !showTog;
     }
-
-
     //Normal:
-    public void runSampleCaseNormal(int fileNo)throws Exception{
+    public void runSampleCaseNormal(int fileNo)throws Exception
+    {
         vec.clear();
         timeList.getItems().clear();
         resultslist.getItems().clear();
@@ -291,8 +284,8 @@ public class Controller {
             vec = check.diff;
         }
     }
-
-    public void runMediumCaseNormal(int fileNo)throws Exception{
+    public void runMediumCaseNormal(int fileNo)throws Exception
+    {
         vec.clear();
         timeList.getItems().clear();
         resultslist.getItems().clear();
@@ -341,8 +334,8 @@ public class Controller {
             vec = check.diff;
         }
     }
-
-    public void runLargeCaseNormal(int fileNo)throws Exception{
+    public void runLargeCaseNormal(int fileNo)throws Exception
+    {
         vec.clear();
         timeList.getItems().clear();
         resultslist.getItems().clear();
