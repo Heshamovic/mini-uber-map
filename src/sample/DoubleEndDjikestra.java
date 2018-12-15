@@ -253,7 +253,7 @@ public class DoubleEndDjikestra {
         ret = String.format("%.2f", QA.shortestTime * 60.0) + " mins, "
                 + String.format("%.2f", QA.totalDist) + " km, "
                 + String.format("%.2f", QA.totalWalkingDest) + " km, "
-                + String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km.";
+                + String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km";
 
         lines.add(String.format("%.2f", QA.shortestTime * 60.0) + " mins");
         lines.add(String.format("%.2f", QA.totalDist) + " km");
@@ -284,7 +284,7 @@ public class DoubleEndDjikestra {
             long now = System.currentTimeMillis();
             LV.getItems().add("Test #" + (i + 1) + ": " +
             DEDIJ(Double.parseDouble(a[4]) / 1000.0, Double.parseDouble(a[0]), Double.parseDouble(a[1])
-                    , Double.parseDouble(a[2]), Double.parseDouble(a[3])));
+                    , Double.parseDouble(a[2]), Double.parseDouble(a[3])) + ", path: " + lines.get(lines.size() - 1) + ".");
             now = System.currentTimeMillis() - now;
             timeL.getItems().add(Long.toString(now));
             totalTime += now;

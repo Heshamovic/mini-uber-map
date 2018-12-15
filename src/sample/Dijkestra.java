@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.scene.control.ListView;
 import javafx.util.Pair;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -21,16 +22,18 @@ public class Dijkestra {
         private static int [] parent ;
         private static double [] cost, costdis ;
         private static double x1,y1,x2,y2,R;
-        dijkstra()
+        dijkstra(FileReader fr)
         {
+            FR = fr;
+            BR = new BufferedReader(FR);
             totalwalk = 0;
             totaldrive = 0;
             nodes = new Vector<Node>();
-            nodes.setSize(100005);
+            nodes.setSize(200005);
             pq = new PriorityQueue<pnode>();
-            parent = new int[100005];
-            cost = new double[100005];
-            costdis = new double[100005];
+            parent = new int[200005];
+            cost = new double[200005];
+            costdis = new double[200005];
             path = new Vector<Integer>();
         }
         private static void init()
@@ -44,8 +47,6 @@ public class Dijkestra {
         }
         public static void getinputnode() throws Exception
         {
-            FR = new FileReader("Samples/MediumCases/OLMap.txt");
-            BR = new BufferedReader(FR);
             String s = BR.readLine();
             num_nodes = Integer.parseInt(s);
             String [] a = new String[3];
@@ -84,9 +85,12 @@ public class Dijkestra {
                 nodes.elementAt(node2).child.add(chi);
             }
         }
-        public  long solve() throws Exception
+        public static ListView<String> LV= new ListView<String>();
+        public static ListView<String> timeL= new ListView<String>();
+        public static Vector<String>lines = new Vector<String>();
+        public  long solve(FileReader fr) throws Exception
         {
-            FR = new FileReader("Samples/MediumCases/OLQueries.txt");
+            FR = fr;
             BufferedReader BR = new BufferedReader(FR);
             String s = BR.readLine();
             String []a = new String[5];
@@ -108,8 +112,9 @@ public class Dijkestra {
                 run();
                 end();
                 querytime = System.currentTimeMillis() - querytime;
+                timeL.getItems().add(Long.toString(querytime));
                 Totaltime += querytime;
-                System.out.println(querytime + " ms");
+                //System.out.println(querytime + " ms");
             }
             return Totaltime;
         }
@@ -180,7 +185,9 @@ public class Dijkestra {
                 }
             }
             double timecost = mn * 60;
-            System.out.println(String.format("%.2f", timecost) + " mins");
+            String ret = new String();
+            ret += String.format("%.2f", timecost) + " mins, ";
+            lines.add(String.format("%.2f", timecost) + " mins");
             totaldrive = costdis[ind];
             while (parent[ind] != -1)
             {
@@ -191,12 +198,22 @@ public class Dijkestra {
             totalwalk += displacement(x1, y1, nodes.elementAt(path.lastElement()).x,nodes.elementAt(path.get(path.size()-1)).y);
             totaldrive -= totalwalk;
             totalwalk+=displacement(x2,y2,nodes.elementAt(path.get(0)).x,nodes.elementAt(path.get(0)).y);
-            System.out.println(String.format("%.2f", totalwalk + totaldrive) + " km");
-            System.out.println(String.format("%.2f", totalwalk)+" km");
-            System.out.println(String.format("%.2f", totaldrive) +" km");
+            ret += String.format("%.2f", totalwalk + totaldrive) + " km, ";
+            ret += String.format("%.2f", totalwalk)+" km, ";
+            ret += String.format("%.2f", totaldrive) +" km, ";
+            lines.add(String.format("%.2f", totalwalk + totaldrive) + " km");
+            lines.add(String.format("%.2f", totalwalk)+" km");
+            lines.add(String.format("%.2f", totaldrive) +" km");
+            String Path = new String();
             for (int i = path.size()-1;i>=0;i--)
-                System.out.print(path.elementAt(i) + " " );
-            System.out.println();
+            {
+                Path += path.elementAt(i);
+                if(i != 0)
+                    Path += " ";
+            }
+            ret += "path: " + Path + ".";
+            lines.add(Path);
+            LV.getItems().add("Test #" + (LV.getItems().size() + 1) + ": " + ret);
         }
     }
     public static class pnode implements Comparable <pnode>
