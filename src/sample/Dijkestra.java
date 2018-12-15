@@ -198,7 +198,6 @@ public class Dijkestra {
                 System.out.print(path.elementAt(i) + " " );
             System.out.println();
         }
-
     }
     public static class pnode implements Comparable <pnode>
     {

@@ -22,8 +22,6 @@ public class Controller {
     @FXML
     private Label avgTimelbl;
     @FXML
-    private ProgressBar progBar;
-    @FXML
     private ComboBox sampleBtn;
     @FXML
     private Label status;
@@ -35,9 +33,7 @@ public class Controller {
     public void initialize() {
         sampleBtn.getItems().addAll("Sample Case #1", "Sample Case #2", "Sample Case #3", "Sample Case #4", "Sample Case #5");
     }
-
     public static Vector<String>vec = new Vector<>();
-
     public void runSampleCase1()throws Exception{
         if(sampleBtn.getValue() == "Sample Case #1")
             runSampleCase(1);
@@ -65,7 +61,7 @@ public class Controller {
         try{
             allTimelbl.setText(DEJ.query(FR2) + " ms");
             for(int i = 0 ; i < DEJ.timeL.getItems().size() ; i++){
-                timeList.getItems().add(DEJ.timeL.getItems().get(i));
+                timeList.getItems().add("Test #" + (i + 1) + " " + DEJ.timeL.getItems().get(i) + " ms");
                 mx = Long.max(mx, Long.parseLong(DEJ.timeL.getItems().get(i)));
                 sum += Long.parseLong(DEJ.timeL.getItems().get(i));
             }
@@ -107,7 +103,7 @@ public class Controller {
         try{
             allTimelbl.setText(DEJ.query(FR2) + " ms");
             for(int i = 0 ; i < DEJ.timeL.getItems().size() ; i++){
-                timeList.getItems().add(DEJ.timeL.getItems().get(i));
+                timeList.getItems().add("Test #" + (i + 1) + " " + DEJ.timeL.getItems().get(i) + " ms");
                 mx = Long.max(mx, Long.parseLong(DEJ.timeL.getItems().get(i)));
                 sum += Long.parseLong(DEJ.timeL.getItems().get(i));
             }
@@ -149,7 +145,7 @@ public class Controller {
         try{
             allTimelbl.setText(DEJ.query(FR2) + " ms");
             for(int i = 0 ; i < DEJ.timeL.getItems().size() ; i++){
-                timeList.getItems().add(DEJ.timeL.getItems().get(i));
+                timeList.getItems().add("Test #" + (i + 1) + " " + DEJ.timeL.getItems().get(i) + " ms");
                 mx = Long.max(mx, Long.parseLong(DEJ.timeL.getItems().get(i)));
                 sum += Long.parseLong(DEJ.timeL.getItems().get(i));
             }
@@ -175,7 +171,6 @@ public class Controller {
             vec = check.diff;
         }
     }
-
     public void showDiffrences(){
         resultslist.getItems().clear();
         for (String s : vec) {
