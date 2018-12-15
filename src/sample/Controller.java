@@ -85,7 +85,7 @@ public class Controller {
             showDiff.setDisable(true);
         }
         else{
-            status.setText("There's some differences");
+            status.setText("There're some differences");
             statusBall.setFill(Color.RED);
             showDiff.setDisable(false);
             vec = check.diff;
@@ -128,7 +128,7 @@ public class Controller {
             showDiff.setDisable(true);
         }
         else{
-            status.setText("There's some differences");
+            status.setText("There're some differences");
             statusBall.setFill(Color.RED);
             showDiff.setDisable(false);
             vec = check.diff;
@@ -169,7 +169,7 @@ public class Controller {
             showDiff.setDisable(true);
         }
         else{
-            status.setText("There's some differences");
+            status.setText("There're some differences");
             statusBall.setFill(Color.RED);
             showDiff.setDisable(false);
             vec = check.diff;
