@@ -62,6 +62,9 @@
                      <toggleGroup>
                         <ToggleGroup fx:id="g1" />
                      </toggleGroup>
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
                   </RadioButton>
                   <RadioButton fx:id="normalRadio" mnemonicParsing="false" onAction="#toggleRadio" selected="true" text="Normal" toggleGroup="$g1">
                      <HBox.margin>

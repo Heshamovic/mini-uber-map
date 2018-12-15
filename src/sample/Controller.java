@@ -37,6 +37,9 @@ public class Controller {
     private RadioButton normalRadio;
     @FXML
     public void initialize() {
+        status.setText("Not tests yet!");
+        statusBall.setFill(Color.GHOSTWHITE);
+        showDiff.setDisable(true);
         sampleBtn.getItems().addAll("Sample Case #1", "Sample Case #2", "Sample Case #3", "Sample Case #4", "Sample Case #5");
     }
 
@@ -99,7 +102,7 @@ public class Controller {
             System.out.println(e);
         }
         Checker check = new Checker("Sample", fileNo);
-        if(check.check(DEJ.lines)){
+        if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
             status.setText("All Tests Passed");
             statusBall.setFill(Color.web("#64f594"));
             showDiff.setDisable(true);
@@ -153,7 +156,7 @@ public class Controller {
         }
         runlbl.setVisible(false);
         Checker check = new Checker("medium", 0);
-        if(check.check(DEJ.lines)){
+        if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
             status.setText("All Tests Passed");
             statusBall.setFill(Color.web("#64f594"));
             showDiff.setDisable(true);
@@ -205,7 +208,7 @@ public class Controller {
             System.out.println(e);
         }
         Checker check = new Checker("Large", 0);
-        if(check.check(DEJ.lines)){
+        if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
             status.setText("All Tests Passed");
             statusBall.setFill(Color.web("#64f594"));
             showDiff.setDisable(true);
@@ -276,7 +279,7 @@ public class Controller {
             System.out.println(e);
         }
         Checker check = new Checker("Sample", fileNo);
-        if(check.check(DEJ.lines)){
+        if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
             status.setText("All Tests Passed");
             statusBall.setFill(Color.web("#64f594"));
             showDiff.setDisable(true);
@@ -326,7 +329,7 @@ public class Controller {
             System.out.println(e);
         }
         Checker check = new Checker("medium", fileNo);
-        if(check.check(DEJ.lines)){
+        if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
             status.setText("All Tests Passed");
             statusBall.setFill(Color.web("#64f594"));
             showDiff.setDisable(true);
@@ -376,7 +379,7 @@ public class Controller {
             System.out.println(e);
         }
         Checker check = new Checker("Large", fileNo);
-        if(check.check(DEJ.lines)){
+        if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
             status.setText("All Tests Passed");
             statusBall.setFill(Color.web("#64f594"));
             showDiff.setDisable(true);
