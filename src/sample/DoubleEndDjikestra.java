@@ -85,12 +85,12 @@ public class DoubleEndDjikestra {
             path = new Vector<Integer>();
         }
     }
-    //Calculating distance between 2 points
+    //Calculating Ecludian distance between 2 points
     public static double calcdis(Double x1, Double y1, Double x2, Double y2) // O(1)
     {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
-    //Calculating distance between 2 points squared
+    //Calculating Ecludian distance between 2 points squared
     public static double calcdis2(Double x1, Double y1, Double x2, Double y2) // O(1)
     {
         return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
@@ -133,7 +133,7 @@ public class DoubleEndDjikestra {
             return true;
         return false;
     }
-    //Bi-directional dijkstra
+    //Bi-directional Dijkstra
     public static String DEDIJ(Double radius, Double xSrc, Double ySrc, Double xDest, Double yDest) // O(Elog(V))
     {
         String ret;
