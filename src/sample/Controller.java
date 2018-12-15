@@ -41,12 +41,16 @@ public class Controller {
     }
 
     public static Vector<String>vec = new Vector<>();
-    public static boolean tog = true;
+    public static ListView<String> resultsTMP = new ListView<>();
+
+    public static boolean tog = true, showTog = false;
 
     public void toggleRadio(){
         tog = !tog;
     }
     public void runSampleCase1()throws Exception{
+        resultsTMP.getItems().clear();
+        showDiff.setText("Show Differences");
         if(sampleBtn.getValue() == "Sample Case #1")
             runSampleCase(1);
         else if(sampleBtn.getValue() == "Sample Case #2")
@@ -86,7 +90,10 @@ public class Controller {
             avgTimelbl.setText(sum + " ms");
             maxTimelbl.setText(mx + " ms");
             for (int i = 0 ; i < DEJ.LV.getItems().size() ; i++)
+            {
                 resultslist.getItems().add(DEJ.LV.getItems().get(i));
+                resultsTMP.getItems().add(DEJ.LV.getItems().get(i));
+            }
         }
         catch (Exception e){
             System.out.println(e);
@@ -106,6 +113,8 @@ public class Controller {
     }
 
     public void runMediumCases()throws Exception{
+        resultsTMP.getItems().clear();
+        showDiff.setText("Show Differences");
         if(tog)
         {
             runMediumCaseNormal(0);
@@ -134,7 +143,10 @@ public class Controller {
             avgTimelbl.setText(sum + " ms");
             maxTimelbl.setText(mx + " ms");
             for (int i = 0 ; i < DEJ.LV.getItems().size() ; i++)
+            {
                 resultslist.getItems().add(DEJ.LV.getItems().get(i));
+                resultsTMP.getItems().add(DEJ.LV.getItems().get(i));
+            }
         }
         catch (Exception e){
             System.out.println(e);
@@ -155,6 +167,8 @@ public class Controller {
     }
 
     public void runLargeCases()throws Exception{
+        resultsTMP.getItems().clear();
+        showDiff.setText("Show Differences");
         if(tog)
         {
             runLargeCaseNormal(0);
@@ -182,7 +196,10 @@ public class Controller {
             avgTimelbl.setText(sum + " ms");
             maxTimelbl.setText(mx + " ms");
             for (int i = 0 ; i < DEJ.LV.getItems().size() ; i++)
+            {
                 resultslist.getItems().add(DEJ.LV.getItems().get(i));
+                resultsTMP.getItems().add(DEJ.LV.getItems().get(i));
+            }
         }
         catch (Exception e){
             System.out.println(e);
@@ -203,9 +220,21 @@ public class Controller {
 
     public void showDiffrences(){
         resultslist.getItems().clear();
-        for (String s : vec) {
-            resultslist.getItems().add(s);
+        if(!showTog)
+        {
+            for (String s : vec) {
+                resultslist.getItems().add(s);
+            }
+            showDiff.setText("Return to tests");
         }
+        else
+        {
+            for(int i = 0 ; i < resultsTMP.getItems().size() ;i++){
+                resultslist.getItems().add(resultsTMP.getItems().get(i));
+            }
+            showDiff.setText("Show Differences");
+        }
+        showTog = !showTog;
     }
 
 
@@ -238,7 +267,10 @@ public class Controller {
             avgTimelbl.setText(sum + " ms");
             maxTimelbl.setText(mx + " ms");
             for (int i = 0 ; i < DEJ.LV.getItems().size() ; i++)
+            {
                 resultslist.getItems().add(DEJ.LV.getItems().get(i));
+                resultsTMP.getItems().add(DEJ.LV.getItems().get(i));
+            }
         }
         catch (Exception e){
             System.out.println(e);
@@ -285,7 +317,10 @@ public class Controller {
             avgTimelbl.setText(sum + " ms");
             maxTimelbl.setText(mx + " ms");
             for (int i = 0 ; i < DEJ.LV.getItems().size() ; i++)
+            {
                 resultslist.getItems().add(DEJ.LV.getItems().get(i));
+                resultsTMP.getItems().add(DEJ.LV.getItems().get(i));
+            }
         }
         catch (Exception e){
             System.out.println(e);
@@ -332,7 +367,10 @@ public class Controller {
             avgTimelbl.setText(sum + " ms");
             maxTimelbl.setText(mx + " ms");
             for (int i = 0 ; i < DEJ.LV.getItems().size() ; i++)
+            {
                 resultslist.getItems().add(DEJ.LV.getItems().get(i));
+                resultsTMP.getItems().add(DEJ.LV.getItems().get(i));
+            }
         }
         catch (Exception e){
             System.out.println(e);
