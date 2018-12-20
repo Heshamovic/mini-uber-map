@@ -267,11 +267,6 @@ public class DoubleEndDjikestra {
                 + String.format("%.2f", QA.totalWalkingDest) + " km, "
                 + String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km";
 
-        lines.add(String.format("%.2f", QA.shortestTime * 60.0) + " mins");
-        lines.add(String.format("%.2f", QA.totalDist) + " km");
-        lines.add(String.format("%.2f", QA.totalWalkingDest) + " km");
-        lines.add(String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km");
-
         String s = new String();
         for (int i = 0; i < QA.path.size(); i++) // O(V)
         {
@@ -280,6 +275,11 @@ public class DoubleEndDjikestra {
                 s += " ";
         }
         lines.add(s);
+        lines.add(String.format("%.2f", QA.shortestTime * 60.0) + " mins");
+        lines.add(String.format("%.2f", QA.totalDist) + " km");
+        lines.add(String.format("%.2f", QA.totalWalkingDest) + " km");
+        lines.add(String.format("%.2f", QA.totalDist - QA.totalWalkingDest) + " km");
+
         return ret;
     }
     //Runs queries

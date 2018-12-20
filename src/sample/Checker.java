@@ -36,7 +36,7 @@ public class Checker {
             int i = 0;
             do{
                 s = BR.readLine();
-                if(i%7 == 5 || i%7 == 6)
+                if(i%6 == 5)
                 {
                     i++;
                     continue;
@@ -52,7 +52,7 @@ public class Checker {
             int i = 0;
             do{
                 s = BR.readLine();
-                if(i%7 == 5 || i%7 == 6)
+                if(i%6 == 5)
                 {
                     i++;
                     continue;
