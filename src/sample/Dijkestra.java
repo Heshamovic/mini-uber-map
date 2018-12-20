@@ -90,7 +90,7 @@ public class Dijkestra {
         public static ListView<String> timeL = new ListView<>();
         public static Vector<String>lines = new Vector<>();
         // reads queray and solves them
-        public  long solve(FileReader fr) throws Exception // O(Q(E log(V) + V log(V)))
+        public long solve(FileReader fr) throws Exception // O(Q(E log(V) + V log(V)))
         {
             FR = fr;
             BufferedReader BR = new BufferedReader(FR);
@@ -100,7 +100,6 @@ public class Dijkestra {
             long Totaltime = 0;
             for (int i = 0; i < query; i++) // O(Q(E log(V) + V))
             {
-                long querytime = System.currentTimeMillis();
                 init(); // O(1)
                 s = BR.readLine();
                 a = s.split(" ");
@@ -110,6 +109,7 @@ public class Dijkestra {
                 y2 = Double.parseDouble(a[3]);
                 R = Double.parseDouble(a[4]);
                 R /= 1000.0;
+                long querytime = System.currentTimeMillis();
                 beready(); // O(V log(V))
                 run(); // O(E log(v))
                 end(); // O(V)
@@ -161,9 +161,7 @@ public class Dijkestra {
                 double newnodedis = pq.peek().distance;
                 pq.poll();
                 if (newnode == num_nodes)
-                {
                     break;
-                }
                 for (int i = 0; i < nodes.elementAt(newnode).child.size(); i++) // O(E log(V))
                 {
                     int nei = nodes.elementAt(newnode).child.elementAt(i).getKey();
@@ -188,8 +186,6 @@ public class Dijkestra {
             int ind = num_nodes;
             double timecost = cost[num_nodes] * 60;
             String ret = new String();
-            ret += String.format("%.2f", timecost) + " mins, ";
-            lines.add(String.format("%.2f", timecost) + " mins");
             totaldrive = costdis[ind];
             while (parent[ind] != -1) // O(V)
             {
@@ -197,15 +193,6 @@ public class Dijkestra {
                 ind = parent[ind];
             }
             path.add(ind);
-            totalwalk += displacement(x1, y1, nodes.elementAt(path.lastElement()).x,nodes.elementAt(path.get(path.size()-1)).y);
-            totalwalk += displacement(x2,y2,nodes.elementAt(path.get(1)).x,nodes.elementAt(path.get(1)).y);
-            totaldrive -= totalwalk;
-            ret += String.format("%.2f", totalwalk + totaldrive) + " km, ";
-            ret += String.format("%.2f", totalwalk)+" km, ";
-            ret += String.format("%.2f", totaldrive) +" km, ";
-            lines.add(String.format("%.2f", totalwalk + totaldrive) + " km");
-            lines.add(String.format("%.2f", totalwalk)+" km");
-            lines.add(String.format("%.2f", totaldrive) +" km");
             String Path = new String();
             for (int i = path.size() - 1; i > 0; i--) // O(V)
             {
@@ -216,6 +203,17 @@ public class Dijkestra {
             ret += "path: " + Path + ".";
             lines.add(Path);
             LV.getItems().add("Test #" + (LV.getItems().size() + 1) + ": " + ret);
+            ret = String.format("%.2f", timecost) + " mins, ";
+            lines.add(String.format("%.2f", timecost) + " mins");
+            totalwalk += displacement(x1, y1, nodes.elementAt(path.lastElement()).x,nodes.elementAt(path.get(path.size()-1)).y);
+            totalwalk += displacement(x2,y2,nodes.elementAt(path.get(1)).x,nodes.elementAt(path.get(1)).y);
+            totaldrive -= totalwalk;
+            ret += String.format("%.2f", totalwalk + totaldrive) + " km, ";
+            ret += String.format("%.2f", totalwalk)+" km, ";
+            ret += String.format("%.2f", totaldrive) +" km, ";
+            lines.add(String.format("%.2f", totalwalk + totaldrive) + " km");
+            lines.add(String.format("%.2f", totalwalk)+" km");
+            lines.add(String.format("%.2f", totaldrive) +" km");
             for (int i = 0; i < endNodes.size(); i++)
                 nodes.elementAt(endNodes.elementAt(i)).child.removeElementAt(nodes.elementAt(endNodes.elementAt(i)).child.size() - 1);
         }

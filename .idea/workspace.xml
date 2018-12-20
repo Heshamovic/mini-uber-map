@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="Commenting">
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="speeding up normal dijkestra">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Controller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Samples/LargeCases/SFOutput.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/LargeCases/SFOutput.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Samples/MediumCases/OLOutput.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/MediumCases/OLOutput.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Samples/SampleCases/output1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/SampleCases/output1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Samples/SampleCases/output2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/SampleCases/output2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Samples/SampleCases/output3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/SampleCases/output3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Samples/SampleCases/output4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/SampleCases/output4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Samples/SampleCases/output5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/SampleCases/output5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Checker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Checker.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Dijkestra$dijkstra.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Dijkestra$dijkstra.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Dijkestra$node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Dijkestra$node.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Dijkestra$pnode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Dijkestra$pnode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/Checker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Checker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/Dijkestra.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Dijkestra.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
@@ -99,24 +107,51 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/Dijkestra.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="611">
+              <caret line="116" column="63" lean-forward="true" selection-start-line="116" selection-start-column="63" selection-end-line="116" selection-end-column="63" />
               <folding>
-                <element signature="class#dijkstra#0;class#Dijkestra#0" />
                 <element signature="method#dijkstra#0;class#dijkstra#0;class#Dijkestra#0" />
                 <element signature="method#init#0;class#dijkstra#0;class#Dijkestra#0" />
                 <element signature="method#getinputnode#0;class#dijkstra#0;class#Dijkestra#0" />
                 <element signature="method#getinputedges#0;class#dijkstra#0;class#Dijkestra#0" />
-                <element signature="method#solve#0;class#dijkstra#0;class#Dijkestra#0" />
-                <element signature="method#displacement#0;class#dijkstra#0;class#Dijkestra#0" />
                 <element signature="method#beready#0;class#dijkstra#0;class#Dijkestra#0" />
                 <element signature="method#run#0;class#dijkstra#0;class#Dijkestra#0" />
-                <element signature="method#end#0;class#dijkstra#0;class#Dijkestra#0" />
                 <element signature="class#pnode#0;class#Dijkestra#0" />
                 <element signature="class#Node#0;class#Dijkestra#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/Checker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="21">
+              <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
+              <folding>
+                <element signature="e#950#1407#1" />
+                <element signature="e#1420#1876#1" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="400">
+              <caret line="123" column="39" selection-start-line="123" selection-start-column="39" selection-end-line="123" selection-end-column="39" />
+              <folding>
+                <element signature="method#initialize#0;class#Controller#0" />
+                <element signature="method#runSampleCase1#0;class#Controller#0" />
+                <element signature="method#runSampleCase#0;class#Controller#0" />
+                <element signature="method#runLargeCases#0;class#Controller#0" />
+                <element signature="method#showDiffrences#0;class#Controller#0" />
+                <element signature="method#runSampleCaseNormal#0;class#Controller#0" />
+                <element signature="method#runMediumCaseNormal#0;class#Controller#0" />
               </folding>
             </state>
           </provider>
@@ -139,6 +174,7 @@
       <find>calcdis</find>
       <find>sys</find>
       <find>qu</find>
+      <find>solve</find>
     </findStrings>
   </component>
   <component name="FindManager">
@@ -162,9 +198,9 @@
         <option value="$PROJECT_DIR$/src/sample/DIFF.java" />
         <option value="$PROJECT_DIR$/src/sample/Main.java" />
         <option value="$PROJECT_DIR$/Samples/outPut.txt" />
+        <option value="$PROJECT_DIR$/src/sample/DoubleEndDjikestra.java" />
         <option value="$PROJECT_DIR$/src/sample/Controller.java" />
         <option value="$PROJECT_DIR$/src/sample/Checker.java" />
-        <option value="$PROJECT_DIR$/src/sample/DoubleEndDjikestra.java" />
         <option value="$PROJECT_DIR$/src/sample/Dijkestra.java" />
       </list>
     </option>
@@ -373,7 +409,14 @@
       <option name="project" value="LOCAL" />
       <updated>1544897361785</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="speeding up normal dijkestra">
+      <created>1545304180387</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1545304180387</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -420,12 +463,16 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/git-merge-test" />
+    </ignored-roots>
     <MESSAGE value="Testing" />
     <MESSAGE value="updating test case time format" />
     <MESSAGE value="Merging bi and uni codes and adding choice to run one of them" />
     <MESSAGE value="Testing and updating" />
     <MESSAGE value="Commenting" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commenting" />
+    <MESSAGE value="speeding up normal dijkestra" />
+    <option name="LAST_COMMIT_MESSAGE" value="speeding up normal dijkestra" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -465,37 +512,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Checker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
-          <folding>
-            <element signature="method#Checker#0;class#Checker#0" />
-            <element signature="method#check#0;class#Checker#0" />
-            <element signature="e#2009#2421#0" />
-            <element signature="e#2305#2339#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="287" selection-start-line="287" selection-end-line="287" />
-          <folding>
-            <element signature="method#initialize#0;class#Controller#0" />
-            <element signature="method#runSampleCase1#0;class#Controller#0" />
-            <element signature="method#runSampleCase#0;class#Controller#0" />
-            <element signature="method#runMediumCases#0;class#Controller#0" />
-            <element signature="method#runLargeCases#0;class#Controller#0" />
-            <element signature="method#showDiffrences#0;class#Controller#0" />
-            <element signature="method#runSampleCaseNormal#0;class#Controller#0" />
-            <element signature="method#runMediumCaseNormal#0;class#Controller#0" />
-            <element signature="method#runLargeCaseNormal#0;class#Controller#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -526,23 +542,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Checker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
+          <folding>
+            <element signature="e#950#1407#1" />
+            <element signature="e#1420#1876#1" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Dijkestra.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        <state relative-caret-position="611">
+          <caret line="116" column="63" lean-forward="true" selection-start-line="116" selection-start-column="63" selection-end-line="116" selection-end-column="63" />
           <folding>
-            <element signature="class#dijkstra#0;class#Dijkestra#0" />
             <element signature="method#dijkstra#0;class#dijkstra#0;class#Dijkestra#0" />
             <element signature="method#init#0;class#dijkstra#0;class#Dijkestra#0" />
             <element signature="method#getinputnode#0;class#dijkstra#0;class#Dijkestra#0" />
             <element signature="method#getinputedges#0;class#dijkstra#0;class#Dijkestra#0" />
-            <element signature="method#solve#0;class#dijkstra#0;class#Dijkestra#0" />
-            <element signature="method#displacement#0;class#dijkstra#0;class#Dijkestra#0" />
             <element signature="method#beready#0;class#dijkstra#0;class#Dijkestra#0" />
             <element signature="method#run#0;class#dijkstra#0;class#Dijkestra#0" />
-            <element signature="method#end#0;class#dijkstra#0;class#Dijkestra#0" />
             <element signature="class#pnode#0;class#Dijkestra#0" />
             <element signature="class#Node#0;class#Dijkestra#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="123" column="39" selection-start-line="123" selection-start-column="39" selection-end-line="123" selection-end-column="39" />
+          <folding>
+            <element signature="method#initialize#0;class#Controller#0" />
+            <element signature="method#runSampleCase1#0;class#Controller#0" />
+            <element signature="method#runSampleCase#0;class#Controller#0" />
+            <element signature="method#runLargeCases#0;class#Controller#0" />
+            <element signature="method#showDiffrences#0;class#Controller#0" />
+            <element signature="method#runSampleCaseNormal#0;class#Controller#0" />
+            <element signature="method#runMediumCaseNormal#0;class#Controller#0" />
           </folding>
         </state>
       </provider>
