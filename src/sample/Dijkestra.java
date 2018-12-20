@@ -22,19 +22,21 @@ public class Dijkestra {
         private static int [] parent ;
         private static double [] cost, costdis ;
         private static double x1,y1,x2,y2,R;
+        private static Vector<Integer> endNodes;
         dijkstra(FileReader fr) // O(1)
         {
             FR = fr;
             BR = new BufferedReader(FR);
             totalwalk = 0;
             totaldrive = 0;
-            nodes = new Vector<Node>();
+            nodes = new Vector<>();
             nodes.setSize(200005);
-            pq = new PriorityQueue<pnode>();
+            pq = new PriorityQueue<>();
             parent = new int[200005];
             cost = new double[200005];
             costdis = new double[200005];
-            path = new Vector<Integer>();
+            path = new Vector<>();
+            endNodes = new Vector<>();
         }
         private static void init() // O(1)
         {
@@ -77,16 +79,16 @@ public class Dijkestra {
                 len = Double.parseDouble(a[2]);
                 vel = Double.parseDouble(a[3]);
                 time = len / vel;
-                Pair<Double,Double> pp = new Pair<Double,Double>(time, len);
-                Pair<Integer, Pair<Double,Double>> chi = new Pair<Integer, Pair<Double,Double>>(node2, pp);
+                Pair<Double,Double> pp = new Pair<>(time, len);
+                Pair<Integer, Pair<Double,Double>> chi = new Pair<>(node2, pp);
                 nodes.elementAt(node1).child.add(chi);
-                chi = new  Pair<Integer, Pair<Double,Double>>(node1, pp);
+                chi = new  Pair<>(node1, pp);
                 nodes.elementAt(node2).child.add(chi);
             }
         }
-        public static ListView<String> LV = new ListView<String>();
-        public static ListView<String> timeL = new ListView<String>();
-        public static Vector<String>lines = new Vector<String>();
+        public static ListView<String> LV = new ListView<>();
+        public static ListView<String> timeL = new ListView<>();
+        public static Vector<String>lines = new Vector<>();
         // reads queray and solves them
         public  long solve(FileReader fr) throws Exception // O(Q(E log(V) + V log(V)))
         {
@@ -96,7 +98,7 @@ public class Dijkestra {
             String []a = new String[5];
             query = Integer.parseInt(s);
             long Totaltime = 0;
-            for (int i=0;i<query; i++) // O(Q(E log(V) + V))
+            for (int i = 0; i < query; i++) // O(Q(E log(V) + V))
             {
                 long querytime = System.currentTimeMillis();
                 init(); // O(1)
@@ -125,6 +127,7 @@ public class Dijkestra {
         //Get all nodes that the person can start the ride from
         private static void beready() // O(V)
         {
+            endNodes = new Vector<>();
             for (int i = 0; i < num_nodes; i++) // O(V log(V))
             {
                 double xnode = nodes.get(i).x;
@@ -132,12 +135,19 @@ public class Dijkestra {
                 double res = displacement(x1, y1, xnode, ynode);
                 if (res <= R)
                 {
-                    double time = res/5.0;
+                    double time = res / 5.0;
                     pnode hob = new pnode(time, res, i);
                     parent[i] = -1;
                     costdis[i] = res;
                     cost[i] = res / 5.0;
                     pq.add(hob);
+                }
+                res = displacement(x2, y2, xnode, ynode);
+                if (res <= R)
+                {
+                    double time = res / 5.0;
+                    endNodes.add(nodes.get(i).id);
+                    nodes.get(i).child.add(new Pair(num_nodes, new Pair(time, res)));
                 }
             }
         }
@@ -150,6 +160,10 @@ public class Dijkestra {
                 double newnodecost = pq.peek().time;
                 double newnodedis = pq.peek().distance;
                 pq.poll();
+                if (newnode == num_nodes)
+                {
+                    break;
+                }
                 for (int i = 0; i < nodes.elementAt(newnode).child.size(); i++) // O(E log(V))
                 {
                     int nei = nodes.elementAt(newnode).child.elementAt(i).getKey();
@@ -167,27 +181,12 @@ public class Dijkestra {
                 }
             }
         }
+
         //get all avaliable nodes that can reach the destination
         private static void end() // O(V)
         {
-            int ind = 0;
-            double mn = 1000000005;
-            for (int i = 0; i < num_nodes; i++) // O(V)
-            {
-                double xnode = nodes.get(i).x;
-                double ynode = nodes.get(i).y;
-                double res = displacement(x2, y2, xnode, ynode);
-                if (res <= R)
-                {
-                    double time = res/5.0;
-                    if (time + cost[i] < mn)
-                    {
-                        ind=i;
-                        mn=time+cost[i];
-                    }
-                }
-            }
-            double timecost = mn * 60;
+            int ind = num_nodes;
+            double timecost = cost[num_nodes] * 60;
             String ret = new String();
             ret += String.format("%.2f", timecost) + " mins, ";
             lines.add(String.format("%.2f", timecost) + " mins");
@@ -199,8 +198,8 @@ public class Dijkestra {
             }
             path.add(ind);
             totalwalk += displacement(x1, y1, nodes.elementAt(path.lastElement()).x,nodes.elementAt(path.get(path.size()-1)).y);
+            totalwalk += displacement(x2,y2,nodes.elementAt(path.get(1)).x,nodes.elementAt(path.get(1)).y);
             totaldrive -= totalwalk;
-            totalwalk+=displacement(x2,y2,nodes.elementAt(path.get(0)).x,nodes.elementAt(path.get(0)).y);
             ret += String.format("%.2f", totalwalk + totaldrive) + " km, ";
             ret += String.format("%.2f", totalwalk)+" km, ";
             ret += String.format("%.2f", totaldrive) +" km, ";
@@ -208,15 +207,17 @@ public class Dijkestra {
             lines.add(String.format("%.2f", totalwalk)+" km");
             lines.add(String.format("%.2f", totaldrive) +" km");
             String Path = new String();
-            for (int i = path.size()-1;i>=0;i--) // O(V)
+            for (int i = path.size() - 1; i > 0; i--) // O(V)
             {
                 Path += path.elementAt(i);
-                if(i != 0)
+                if(i != 1)
                     Path += " ";
             }
             ret += "path: " + Path + ".";
             lines.add(Path);
             LV.getItems().add("Test #" + (LV.getItems().size() + 1) + ": " + ret);
+            for (int i = 0; i < endNodes.size(); i++)
+                nodes.elementAt(endNodes.elementAt(i)).child.removeElementAt(nodes.elementAt(endNodes.elementAt(i)).child.size() - 1);
         }
     }
     //priority queue node that overrides the sort of the priority queue
@@ -248,7 +249,7 @@ public class Dijkestra {
             id = 0;
             x = 0.0;
             y = 0.0;
-            child = new Vector<Pair<Integer,Pair<Double,Double>>>();
+            child = new Vector<>();
         }
     }
 
