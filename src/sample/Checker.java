@@ -45,8 +45,59 @@ public class Checker {
                 i++;
             }while(s != null);
         }
-        else{
+        else if (file == "large"){
             FileReader FR = new FileReader("Samples/LargeCases/SFOutput.txt");
+            BufferedReader BR = new BufferedReader(FR);
+            String s;
+            int i = 0;
+            do{
+                s = BR.readLine();
+                if(i%6 == 5)
+                {
+                    i++;
+                    continue;
+                }
+                lines.add(s);
+                i++;
+            }while(s != null);
+        }
+        else if(file == "SampleB")
+        {
+            FileReader FR = new FileReader("BonusSamples/SampleCases/output" + fileNo + ".txt");
+            BufferedReader BR = new BufferedReader(FR);
+            String s;
+            int i = 0;
+            do{
+                s = BR.readLine();
+                if(i % 6 == 5)
+                {
+                    i++;
+                    continue;
+                }
+                lines.add(s);
+                i++;
+            }while(s != null);
+        }
+        else if(file == "mediumB")
+        {
+            FileReader FR = new FileReader("BonusSamples/MediumCases/OLOutput.txt");
+            BufferedReader BR = new BufferedReader(FR);
+            String s;
+            int i = 0;
+            do{
+                s = BR.readLine();
+                if(i%6 == 5)
+                {
+                    i++;
+                    continue;
+                }
+                lines.add(s);
+                i++;
+            }while(s != null);
+        }
+        else
+        {
+            FileReader FR = new FileReader("BonusSamples/LargeCases/SFOutput.txt");
             BufferedReader BR = new BufferedReader(FR);
             String s;
             int i = 0;

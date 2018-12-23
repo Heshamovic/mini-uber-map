@@ -39,9 +39,13 @@ public class Controller {
 
     public static Vector<String>vec = new Vector<>();
     public static ListView<String> resultsTMP = new ListView<>();
-    public static boolean tog = true, showTog = false;
+    public static boolean tog = true, showTog = false, bonus = false;
     public void toggleRadio(){
         tog = !tog;
+        bonus = false;
+    }
+    public void toggleBonusRadio(){
+        bonus = true;
     }
     public void runSampleCase1()throws Exception
     {
@@ -60,6 +64,11 @@ public class Controller {
     }
     public void runSampleCase(int fileNo)throws Exception
     {
+        if(bonus)
+        {
+            runSampleCaseBonus(fileNo);
+            return;
+        }
         if(tog)
         {
             runSampleCaseNormal(fileNo);
@@ -112,6 +121,11 @@ public class Controller {
     {
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
+        if(bonus)
+        {
+            runMediumCaseBonus(0);
+            return;
+        }
         if(tog)
         {
             runMediumCaseNormal(0);
@@ -166,6 +180,11 @@ public class Controller {
     {
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
+        if(bonus)
+        {
+            runLargeCaseBonus(0);
+            return;
+        }
         if(tog)
         {
             runLargeCaseNormal(0);
@@ -201,7 +220,7 @@ public class Controller {
         catch (Exception e){
             System.out.println(e);
         }
-        Checker check = new Checker("Large", 0);
+        Checker check = new Checker("large", 0);
         if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
             status.setText("All Tests Passed");
             statusBall.setFill(Color.web("#64f594"));
@@ -371,7 +390,159 @@ public class Controller {
         catch (Exception e){
             System.out.println(e);
         }
-        Checker check = new Checker("Large", fileNo);
+        Checker check = new Checker("large", fileNo);
+        if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
+            status.setText("All Tests Passed");
+            statusBall.setFill(Color.web("#64f594"));
+            showDiff.setDisable(true);
+        }
+        else{
+            status.setText("There're some differences");
+            statusBall.setFill(Color.RED);
+            showDiff.setDisable(false);
+            vec = check.diff;
+        }
+    }
+
+    //Bonus:
+    public void runSampleCaseBonus(int fileNo)throws Exception
+    {
+        vec.clear();
+        timeList.getItems().clear();
+        resultslist.getItems().clear();
+        FileReader FR = new FileReader("BonusSamples/SampleCases/map" + fileNo + "B.txt");
+        FileReader FR2 = new FileReader("BonusSamples/SampleCases/queries" + fileNo + ".txt");
+
+        DijkestraIntervals.dijkestraIntervals DEJ = new DijkestraIntervals.dijkestraIntervals(FR);
+        DEJ.getinputnode();
+        DEJ.getinputedges();
+
+        DEJ.lines.clear();
+        DEJ.timeL.getItems().clear();
+        DEJ.LV.getItems().clear();
+
+
+        long mx = Long.MIN_VALUE, sum = 0;
+        try{
+            allTimelbl.setText(DEJ.solve(FR2) + " ms");
+            for(int i = 0 ; i < DEJ.timeL.getItems().size() ; i++){
+                timeList.getItems().add("Test #" + (i + 1) + ": " + DEJ.timeL.getItems().get(i) + " ms");
+                mx = Long.max(mx, Long.parseLong(DEJ.timeL.getItems().get(i)));
+                sum += Long.parseLong(DEJ.timeL.getItems().get(i));
+            }
+            sum /= DEJ.timeL.getItems().size();
+            avgTimelbl.setText(sum + " ms");
+            maxTimelbl.setText(mx + " ms");
+            for (int i = 0 ; i < DEJ.LV.getItems().size() ; i++)
+            {
+                resultslist.getItems().add(DEJ.LV.getItems().get(i));
+                resultsTMP.getItems().add(DEJ.LV.getItems().get(i));
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        Checker check = new Checker("SampleB", fileNo);
+        if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
+            status.setText("All Tests Passed");
+            statusBall.setFill(Color.web("#64f594"));
+            showDiff.setDisable(true);
+        }
+        else{
+            status.setText("There're some differences");
+            statusBall.setFill(Color.RED);
+            showDiff.setDisable(false);
+            vec = check.diff;
+        }
+    }
+    public void runMediumCaseBonus(int fileNo)throws Exception
+    {
+        vec.clear();
+        timeList.getItems().clear();
+        resultslist.getItems().clear();
+        FileReader FR = new FileReader("BonusSamples/MediumCases/OLMapB.txt");
+        FileReader FR2 = new FileReader("BonusSamples/MediumCases/OLQueries.txt");
+
+        DijkestraIntervals.dijkestraIntervals DEJ = new DijkestraIntervals.dijkestraIntervals(FR);
+        DEJ.getinputnode();
+        DEJ.getinputedges();
+
+        DEJ.lines.clear();
+        DEJ.timeL.getItems().clear();
+        DEJ.LV.getItems().clear();
+
+
+        long mx = Long.MIN_VALUE, sum = 0;
+        try{
+            allTimelbl.setText(DEJ.solve(FR2) + " ms");
+            for(int i = 0 ; i < DEJ.timeL.getItems().size() ; i++){
+                timeList.getItems().add("Test #" + (i + 1) + ": " + DEJ.timeL.getItems().get(i) + " ms");
+                mx = Long.max(mx, Long.parseLong(DEJ.timeL.getItems().get(i)));
+                sum += Long.parseLong(DEJ.timeL.getItems().get(i));
+            }
+            sum /= DEJ.timeL.getItems().size();
+            avgTimelbl.setText(sum + " ms");
+            maxTimelbl.setText(mx + " ms");
+            for (int i = 0 ; i < DEJ.LV.getItems().size() ; i++)
+            {
+                resultslist.getItems().add(DEJ.LV.getItems().get(i));
+                resultsTMP.getItems().add(DEJ.LV.getItems().get(i));
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        Checker check = new Checker("mediumB", fileNo);
+        if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
+            status.setText("All Tests Passed");
+            statusBall.setFill(Color.web("#64f594"));
+            showDiff.setDisable(true);
+        }
+        else{
+            status.setText("There're some differences");
+            statusBall.setFill(Color.RED);
+            showDiff.setDisable(false);
+            vec = check.diff;
+        }
+    }
+    public void runLargeCaseBonus(int fileNo)throws Exception
+    {
+        vec.clear();
+        timeList.getItems().clear();
+        resultslist.getItems().clear();
+        FileReader FR = new FileReader("BonusSamples/LargeCases/SFMapB.txt");
+        FileReader FR2 = new FileReader("BonusSamples/LargeCases/SFQueries.txt");
+
+        DijkestraIntervals.dijkestraIntervals DEJ = new DijkestraIntervals.dijkestraIntervals(FR);
+        DEJ.getinputnode();
+        DEJ.getinputedges();
+
+        DEJ.lines.clear();
+        DEJ.timeL.getItems().clear();
+        DEJ.LV.getItems().clear();
+
+
+        long mx = Long.MIN_VALUE, sum = 0;
+        try{
+            allTimelbl.setText(DEJ.solve(FR2) + " ms");
+            for(int i = 0 ; i < DEJ.timeL.getItems().size() ; i++){
+                timeList.getItems().add("Test #" + (i + 1) + ": " + DEJ.timeL.getItems().get(i) + " ms");
+                mx = Long.max(mx, Long.parseLong(DEJ.timeL.getItems().get(i)));
+                sum += Long.parseLong(DEJ.timeL.getItems().get(i));
+            }
+            sum /= DEJ.timeL.getItems().size();
+            avgTimelbl.setText(sum + " ms");
+            maxTimelbl.setText(mx + " ms");
+            for (int i = 0 ; i < DEJ.LV.getItems().size() ; i++)
+            {
+                resultslist.getItems().add(DEJ.LV.getItems().get(i));
+                resultsTMP.getItems().add(DEJ.LV.getItems().get(i));
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        Checker check = new Checker("LargeB", fileNo);
         if(check.check(DEJ.lines, timeList, allTimelbl.getText())){
             status.setText("All Tests Passed");
             statusBall.setFill(Color.web("#64f594"));
