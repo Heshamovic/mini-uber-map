@@ -410,8 +410,8 @@ public class Controller {
         vec.clear();
         timeList.getItems().clear();
         resultslist.getItems().clear();
-        FileReader FR = new FileReader("BonusSamples/SampleCases/map" + fileNo + "B.txt");
-        FileReader FR2 = new FileReader("BonusSamples/SampleCases/queries" + fileNo + ".txt");
+        FileReader FR = new FileReader("BonusSamples/SampleCases/map1B.txt");
+        FileReader FR2 = new FileReader("BonusSamples/SampleCases/queries1.txt");
 
         DijkestraIntervals.dijkestraIntervals DEJ = new DijkestraIntervals.dijkestraIntervals(FR);
         DEJ.getinputnode();

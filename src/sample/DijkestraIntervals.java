@@ -15,14 +15,14 @@ public class DijkestraIntervals {
         private static Dictionary<Pair<Integer, Integer>, Integer> mp;
         public static FileReader FR;
         public static BufferedReader BR;
-        private static int num_nodes, edges, query, speedCount, interval;
+        private static int num_nodes, edges, query, speedCount, interval, newinterval;
         private static double totalwalk, totaldrive, intervalRange;
         private static Vector<DijkestraIntervals.Node> nodes;
         private static Vector<Integer> path;
         private static PriorityQueue<DijkestraIntervals.pnode> pq;
-        private static int[] parent;
-        private static double[] cost, costdis;
-        private static double x1,y1,x2,y2,R;
+        private static int[][][] parent;
+        private static double[][][] cost, costdis;
+        private static double x1, y1, x2, y2, R, timecost = Double.MAX_VALUE;
         private static Vector<Integer> endNodes;
         //GUI
         public static ListView <String> LV = new ListView<>();
@@ -44,15 +44,19 @@ public class DijkestraIntervals {
         private static void initsizes(int siz)
         {
             nodes.setSize(siz);
-            parent = new int[siz];
-            cost = new double[siz];
-            costdis = new double[siz];
+            parent = new int[6200][62][62];
+            cost = new double[6200][62][62];
+            costdis = new double[6200][62][62];
         }
         private static void init() // O(1)
         {
-            Arrays.fill(parent,-1);
-            Arrays.fill(cost, Double.MAX_VALUE / 100);
-            Arrays.fill(costdis, Double.MAX_VALUE / 100);
+            for (int i = 0; i < 6200; i++)
+                for (int j = 0; j < 62; j++)
+                    for (int k = 0; k < 62; k++)
+                    {
+                        parent[i][j][k] = -1;
+                        cost[i][j][k] = costdis[i][j][k] = Double.MAX_VALUE / 100;
+                    }
             pq.clear();
             totalwalk = totaldrive = 0;
             path.clear();
@@ -134,11 +138,6 @@ public class DijkestraIntervals {
             }
             return Totaltime;
         }
-        //Calculate Ecludian Distance between two points
-        private static double displacement(double x11, double y11, double x22, double y22) // O(1)
-        {
-            return Math.sqrt((y22 - y11) * (y22 - y11) +(x22 - x11) * (x22 - x11));
-        }
         //Get all nodes that the person can start the ride from
         private static void beready() // O(V)
         {
@@ -152,9 +151,10 @@ public class DijkestraIntervals {
                 {
                     double time = res / 5.0;
                     pnode hob = new pnode(time, res, i);
-                    parent[i] = -1;
-                    costdis[i] = res;
-                    cost[i] = res / 5.0;
+                    newinterval = (int)(time / intervalRange) % speedCount;
+                    parent[i][0][newinterval] = -1;
+                    cost[i][0][newinterval] = time;
+                    costdis[i][0][newinterval] = res;
                     pq.add(hob);
                 }
                 res = displacement(x2, y2, xnode, ynode);
@@ -163,7 +163,7 @@ public class DijkestraIntervals {
                     double time = res / 5.0;
                     endNodes.add(i);
                     nodes.get(i).child.add(new Edge(num_nodes, res));
-                    nodes.get(i).child.lastElement().finaldist = time;
+                    nodes.get(i).child.lastElement().finalTime = time;
                     nodes.get(i).child.lastElement().isfinal = true;
                 }
             }
@@ -174,25 +174,29 @@ public class DijkestraIntervals {
             while (!pq.isEmpty()) // O(E log(V))
             {
                 int newnode = pq.peek().nod;
-                double newnodecost = pq.peek().time;
-                double newnodedis = pq.peek().distance;
+                double newnodecost = pq.peek().time, newnodedis = pq.peek().distance;
                 pq.poll();
-                if (newnode == num_nodes)
-                    break;
                 interval = (int)(newnodecost / intervalRange);
                 interval %= speedCount;
-                for (int i = 0; i < nodes.get(newnode).child.size(); i++) // O(E log(V))
+                if (newnode == num_nodes)
+                {
+                    timecost = Math.min(newnodecost * 60, timecost);
+                    continue;
+                }
+                for (int i = 0; i < nodes.get(newnode).child.size(); i++)
                 {
                     int id = nodes.get(newnode).child.get(i).id;
-                    double time = nodes.get(newnode).child.get(i).finaldist, dist = nodes.get(newnode).child.get(i).distance;
+                    double time = nodes.get(newnode).child.get(i).finalTime, dist = nodes.get(newnode).child.get(i).distance;
                     if(!nodes.get(newnode).child.get(i).isfinal)
                         time = inlines[mp.get(new Pair(newnode, id))][interval];
-                    if(cost[id] > newnodecost + time || (cost[id] == newnodecost + time && costdis[id] > dist + newnodedis))
+                    newinterval = (int)((time + newnodecost) / intervalRange) % speedCount;
+                    if(cost[id][interval][newinterval] > newnodecost + time ||
+                            (cost[id][interval][newinterval] == newnodecost + time && costdis[id][interval][newinterval] > dist + newnodedis))
                     {
-                        cost[id] = newnodecost + time;
-                        costdis[id] = dist + newnodedis;
-                        parent[id] = newnode;
-                        pq.add(new pnode(cost[id], costdis[id], id));
+                        cost[id][interval][newinterval] = newnodecost + time;
+                        costdis[id][interval][newinterval] = dist + newnodedis;
+                        parent[id][interval][newinterval] = newnode;
+                        pq.add(new pnode(cost[id][interval][newinterval], costdis[id][interval][newinterval], id));
                     }
                 }
             }
@@ -201,30 +205,22 @@ public class DijkestraIntervals {
         private static void end() // O(V)
         {
             int ind = num_nodes;
-            double timecost = cost[num_nodes] * 60;
             String ret = new String();
-            totaldrive = 0.0;
-            while (parent[ind] != -1) // O(V)
+            System.out.println(timecost);
+            timecost = Double.MAX_VALUE;
+            /*totaldrive = costdis[ind][interval];
+            while (parent[ind][interval] != -1) // O(V)
             {
                 path.add(ind);
-                int x = ind;
-                interval = parent[x];
-                ind = parent[x];
+                ind = parent[ind][interval];
             }
             path.add(ind);
             String Path = new String();
             for (int i = path.size() - 1; i > 0; i--) // O(V)
             {
                 Path += path.elementAt(i);
-                if(i != 1) {
-                    for (int j = 0; j < nodes.get(path.elementAt(i)).child.size(); j++)
-                        if (nodes.get(path.get(i)).child.get(j).id == path.get(i - 1))
-                        {
-                            totaldrive += nodes.get(path.get(i)).child.get(j).distance;
-                            break;
-                        }
+                if(i != 1)
                     Path += " ";
-                }
             }
             ret += "path: " + Path + ", ";
             lines.add(Path);
@@ -232,15 +228,21 @@ public class DijkestraIntervals {
             lines.add(String.format("%.2f", timecost) + " mins");
             totalwalk += displacement(x1, y1, nodes.elementAt(path.lastElement()).x, nodes.elementAt(path.get(path.size()-1)).y);
             totalwalk += displacement(x2, y2, nodes.elementAt(path.get(1)).x, nodes.elementAt(path.get(1)).y);
+            totaldrive -= totalwalk;
             ret += String.format("%.2f", totalwalk + totaldrive) + " km, ";
             ret += String.format("%.2f", totalwalk)+" km, ";
             ret += String.format("%.2f", totaldrive) +" km.";
             LV.getItems().add("Test #" + (LV.getItems().size() + 1) + ": " + ret);
             lines.add(String.format("%.2f", totalwalk + totaldrive) + " km");
             lines.add(String.format("%.2f", totalwalk)+" km");
-            lines.add(String.format("%.2f", totaldrive) +" km");
+            lines.add(String.format("%.2f", totaldrive) +" km");*/
             for (int i = 0; i < endNodes.size(); i++)
                 nodes.get(endNodes.get(i)).child.removeElementAt(nodes.get(endNodes.get(i)).child.size() - 1);
+        }
+        //Calculate Ecludian Distance between two points
+        private static double displacement(double x11, double y11, double x22, double y22) // O(1)
+        {
+            return Math.sqrt((y22 - y11) * (y22 - y11) +(x22 - x11) * (x22 - x11));
         }
     }
 
@@ -279,13 +281,13 @@ public class DijkestraIntervals {
     public static class Edge
     {
         int id;
-        double distance, finaldist;
+        double distance, finalTime;
         Boolean isfinal;
         Edge(int i, double d)
         {
             id = i;
             distance = d;
-            finaldist = 0.0;
+            finalTime = 0.0;
             isfinal = false;
         }
     }

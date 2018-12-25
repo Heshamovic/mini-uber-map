@@ -63,7 +63,7 @@ public class Checker {
         }
         else if(file == "SampleB")
         {
-            FileReader FR = new FileReader("BonusSamples/SampleCases/output" + fileNo + ".txt");
+            FileReader FR = new FileReader("BonusSamples/SampleCases/output1.txt");
             BufferedReader BR = new BufferedReader(FR);
             String s;
             int i = 0;
