@@ -206,7 +206,7 @@ public class Dijkestra {
             ret = String.format("%.2f", timecost) + " mins, ";
             lines.add(String.format("%.2f", timecost) + " mins");
             totalwalk += displacement(x1, y1, nodes.elementAt(path.lastElement()).x,nodes.elementAt(path.get(path.size()-1)).y);
-            totalwalk += displacement(x2, y2, nodes.elementAt(path.get(1)).x, nodes.elementAt(path.get(1)).y);
+            totalwalk += displacement(x2,y2,nodes.elementAt(path.get(1)).x,nodes.elementAt(path.get(1)).y);
             totaldrive -= totalwalk;
             ret += String.format("%.2f", totalwalk + totaldrive) + " km, ";
             ret += String.format("%.2f", totalwalk)+" km, ";
@@ -241,7 +241,7 @@ public class Dijkestra {
     {
         int id ;
         double x, y;
-        Vector<Pair<Integer, Pair<Double, Double>>> child;
+        Vector<Pair<Integer, Pair<Double,Double>>>child;
         Node()
         {
             id = 0;
