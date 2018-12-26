@@ -10,9 +10,6 @@ import java.util.*;
 public class DijkestraIntervals {
     public static class dijkestraIntervals{
 
-        //Try largeinput
-        private static double[][] inlines;
-        private static Dictionary<Pair<Integer, Integer>, Integer> mp;
         public static FileReader FR;
         public static BufferedReader BR;
         private static int num_nodes, edges, query, speedCount, interval, newinterval;
@@ -32,7 +29,6 @@ public class DijkestraIntervals {
         dijkestraIntervals(FileReader fr) // O(1)
         {
             FR = fr;
-            mp = new Hashtable<>();
             BR = new BufferedReader(FR);
             totalwalk = 0;
             totaldrive = 0;
@@ -88,7 +84,6 @@ public class DijkestraIntervals {
             intervalRange = Double.parseDouble(a[2]) / 60.0;
             int node1, node2;
             double len, vel, time;
-            inlines = new double[edges + 1][speedCount + 1];
             for (int i = 0; i < edges; i++) //O(E)
             {
                 s = BR.readLine();
@@ -98,13 +93,12 @@ public class DijkestraIntervals {
                 len = Double.parseDouble(a[2]);
                 nodes.elementAt(node1).child.add(new Edge(node2, len));
                 nodes.elementAt(node2).child.add(new Edge(node1, len));
-                mp.put(new Pair(node1, node2), i);
-                mp.put(new Pair(node2, node1), i);
                 for(int j = 0 ; j < speedCount ; j++)
                 {
                     vel = Double.parseDouble(a[j + 3]);
                     time = len / vel;
-                    inlines[i][j] = time;
+                    nodes.elementAt(node1).child.lastElement().intervals.add(time);
+                    nodes.elementAt(node2).child.lastElement().intervals.add(time);
                 }
             }
         }
@@ -163,7 +157,7 @@ public class DijkestraIntervals {
                     double time = res / 5.0;
                     endNodes.add(i);
                     nodes.get(i).child.add(new Edge(num_nodes, res));
-                    nodes.get(i).child.lastElement().finalTime = time;
+                    nodes.get(i).child.lastElement().intervals.add(time);
                     nodes.get(i).child.lastElement().isfinal = true;
                 }
             }
@@ -181,17 +175,17 @@ public class DijkestraIntervals {
                 if (newnode == num_nodes)
                 {
                     timecost = Math.min(newnodecost * 60, timecost);
-                    continue;
+                    break;
                 }
                 for (int i = 0; i < nodes.get(newnode).child.size(); i++)
                 {
                     int id = nodes.get(newnode).child.get(i).id;
-                    double time = nodes.get(newnode).child.get(i).finalTime, dist = nodes.get(newnode).child.get(i).distance;
+                    double time = nodes.get(newnode).child.get(i).intervals.get(0), dist = nodes.get(newnode).child.get(i).distance;
                     if(!nodes.get(newnode).child.get(i).isfinal)
-                        time = inlines[mp.get(new Pair(newnode, id))][interval];
+                        time = nodes.get(newnode).child.get(i).intervals.get(interval);
                     newinterval = (int)((time + newnodecost) / intervalRange) % speedCount;
                     if(cost[id][interval][newinterval] > newnodecost + time ||
-                            (cost[id][interval][newinterval] == newnodecost + time && costdis[id][interval][newinterval] > dist + newnodedis))
+                      (cost[id][interval][newinterval] == newnodecost + time && costdis[id][interval][newinterval] > dist + newnodedis))
                     {
                         cost[id][interval][newinterval] = newnodecost + time;
                         costdis[id][interval][newinterval] = dist + newnodedis;
@@ -208,7 +202,7 @@ public class DijkestraIntervals {
             String ret = new String();
             System.out.println(timecost);
             timecost = Double.MAX_VALUE;
-            /*totaldrive = costdis[ind][interval];
+            totaldrive = costdis[ind][interval];
             while (parent[ind][interval] != -1) // O(V)
             {
                 path.add(ind);
@@ -235,7 +229,7 @@ public class DijkestraIntervals {
             LV.getItems().add("Test #" + (LV.getItems().size() + 1) + ": " + ret);
             lines.add(String.format("%.2f", totalwalk + totaldrive) + " km");
             lines.add(String.format("%.2f", totalwalk)+" km");
-            lines.add(String.format("%.2f", totaldrive) +" km");*/
+            lines.add(String.format("%.2f", totaldrive) +" km");
             for (int i = 0; i < endNodes.size(); i++)
                 nodes.get(endNodes.get(i)).child.removeElementAt(nodes.get(endNodes.get(i)).child.size() - 1);
         }
@@ -281,14 +275,15 @@ public class DijkestraIntervals {
     public static class Edge
     {
         int id;
-        double distance, finalTime;
+        double distance;
         Boolean isfinal;
+        Vector<Double> intervals;
         Edge(int i, double d)
         {
             id = i;
             distance = d;
-            finalTime = 0.0;
             isfinal = false;
+            intervals = new Vector<>();
         }
     }
 }

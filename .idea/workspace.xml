@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="speeding up normal dijkestra">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Samples/LargeCases/SFMap.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/LargeCases/SFMap.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Samples/LargeCases/SFOutput.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/LargeCases/SFOutput.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Samples/LargeCases/SFQueries.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/LargeCases/SFQueries.txt" afterDir="false" />
@@ -33,11 +31,6 @@
       <change beforePath="$PROJECT_DIR$/Samples/sample5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/sample5.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Samples/sample6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/sample6.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Samples/sample7.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Samples/sample7.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mini uber map.iml" beforeDir="false" afterPath="$PROJECT_DIR$/mini uber map.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Checker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Checker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Controller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Checker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Checker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/DijkestraIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/DijkestraIntervals.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
@@ -119,16 +112,23 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/DijkestraIntervals.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="209" column="39" lean-forward="true" selection-start-line="209" selection-start-column="39" selection-end-line="209" selection-end-column="39" />
+            <state relative-caret-position="196">
+              <caret line="204" column="37" selection-start-line="204" selection-start-column="37" selection-end-line="204" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1199#1563#0" />
+                <element signature="e#1572#1799#0" />
+                <element signature="e#1808#2262#0" />
+                <element signature="e#2271#2938#0" />
                 <element signature="e#2947#4157#0" />
+                <element signature="e#3447#4147#1" />
+                <element signature="e#3978#4133#1" />
                 <element signature="e#4166#5346#0" />
+                <element signature="e#5355#6616#0" />
                 <element signature="e#10210#10461#0" />
                 <element signature="class#pnode#0;class#DijkestraIntervals#0" />
                 <element signature="class#Node#0;class#DijkestraIntervals#0" />
+                <element signature="class#Edge#0;class#DijkestraIntervals#0" />
               </folding>
             </state>
           </provider>
@@ -342,7 +342,7 @@
       <workItem from="1545737865859" duration="397000" />
       <workItem from="1545739956334" duration="2100000" />
       <workItem from="1545744217581" duration="8193000" />
-      <workItem from="1545771046235" duration="614000" />
+      <workItem from="1545771046235" duration="2362000" />
     </task>
     <task id="LOCAL-00001" summary="Testing">
       <created>1544832321978</created>
@@ -411,10 +411,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12606000" />
+    <option name="totallyTimeSpent" value="14354000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" weight="0.17411608" />
       <window_info id="Structure" order="1" weight="0.24962178" />
@@ -425,7 +426,7 @@
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.88543373" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.11456628" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39934534" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -566,16 +567,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/DijkestraIntervals.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="209" column="39" lean-forward="true" selection-start-line="209" selection-start-column="39" selection-end-line="209" selection-end-column="39" />
+        <state relative-caret-position="196">
+          <caret line="204" column="37" selection-start-line="204" selection-start-column="37" selection-end-line="204" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1199#1563#0" />
+            <element signature="e#1572#1799#0" />
+            <element signature="e#1808#2262#0" />
+            <element signature="e#2271#2938#0" />
             <element signature="e#2947#4157#0" />
+            <element signature="e#3447#4147#1" />
+            <element signature="e#3978#4133#1" />
             <element signature="e#4166#5346#0" />
+            <element signature="e#5355#6616#0" />
             <element signature="e#10210#10461#0" />
             <element signature="class#pnode#0;class#DijkestraIntervals#0" />
             <element signature="class#Node#0;class#DijkestraIntervals#0" />
+            <element signature="class#Edge#0;class#DijkestraIntervals#0" />
           </folding>
         </state>
       </provider>
