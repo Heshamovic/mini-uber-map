@@ -36,7 +36,7 @@ public class Controller {
         showDiff.setDisable(true);
         sampleBtn.getItems().addAll("Sample Case #1", "Sample Case #2", "Sample Case #3", "Sample Case #4", "Sample Case #5");
     }
-
+    public static String timeAll;
     public static Vector<String>vec = new Vector<>();
     public static ListView<String> resultsTMP = new ListView<>();
     public static boolean tog = true, showTog = false, bonus = false;
@@ -49,6 +49,7 @@ public class Controller {
     }
     public void runSampleCase1()throws Exception
     {
+        long tmp = System.currentTimeMillis();
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
         if(sampleBtn.getValue() == "Sample Case #1")
@@ -61,6 +62,7 @@ public class Controller {
             runSampleCase(4);
         else if(sampleBtn.getValue() == "Sample Case #5")
             runSampleCase(5);
+        timeAll = Long.toString(System.currentTimeMillis() - tmp);
     }
     public void runSampleCase(int fileNo)throws Exception
     {
@@ -119,16 +121,19 @@ public class Controller {
     }
     public void runMediumCases()throws Exception
     {
+        long tmp = System.currentTimeMillis();
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
         if(bonus)
         {
             runMediumCaseBonus(0);
+            timeAll = Long.toString(System.currentTimeMillis() - tmp);
             return;
         }
         if(tog)
         {
             runMediumCaseNormal(0);
+            timeAll = Long.toString(System.currentTimeMillis() - tmp);
             return;
         }
         vec.clear();
@@ -175,9 +180,11 @@ public class Controller {
             showDiff.setDisable(false);
             vec = check.diff;
         }
+        timeAll = Long.toString(System.currentTimeMillis() - tmp);
     }
     public void runLargeCases()throws Exception
     {
+        long tmp = System.currentTimeMillis();
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
         if(bonus)
@@ -232,6 +239,7 @@ public class Controller {
             showDiff.setDisable(false);
             vec = check.diff;
         }
+        timeAll = Long.toString(System.currentTimeMillis() - tmp);
     }
     public void showDiffrences()
     {

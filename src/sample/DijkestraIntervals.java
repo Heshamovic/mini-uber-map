@@ -12,13 +12,13 @@ public class DijkestraIntervals {
 
         public static FileReader FR;
         public static BufferedReader BR;
-        private static int num_nodes, edges, query, speedCount, interval, newinterval;
+        private static int num_nodes, edges, query, speedCount, interval, curNode;
         private static double totalwalk, totaldrive, intervalRange;
-        private static Vector<DijkestraIntervals.Node> nodes;
+        private static Vector<Node> nodes;
         private static Vector<Integer> path;
-        private static PriorityQueue<DijkestraIntervals.pnode> pq;
-        private static int[][][] parent;
-        private static double[][][] cost, costdis;
+        private static PriorityQueue<pnode> pq;
+        private static Map<Pair<Integer, Integer>, Integer> parent;
+        private static Map<Pair<Integer, Integer>, Double> cost, costdis;
         private static double x1, y1, x2, y2, R, timecost = Double.MAX_VALUE;
         private static Vector<Integer> endNodes;
         //GUI
@@ -37,31 +37,20 @@ public class DijkestraIntervals {
             path = new Vector<>();
             endNodes = new Vector<>();
         }
-        private static void initsizes(int siz)
-        {
-            nodes.setSize(siz);
-            parent = new int[6200][62][62];
-            cost = new double[6200][62][62];
-            costdis = new double[6200][62][62];
-        }
         private static void init() // O(1)
         {
-            for (int i = 0; i < 6200; i++)
-                for (int j = 0; j < 62; j++)
-                    for (int k = 0; k < 62; k++)
-                    {
-                        parent[i][j][k] = -1;
-                        cost[i][j][k] = costdis[i][j][k] = Double.MAX_VALUE / 100;
-                    }
             pq.clear();
             totalwalk = totaldrive = 0;
             path.clear();
+            parent = new HashMap<>();
+            cost = new HashMap<>();
+            costdis = new HashMap<>();
         }
         public static void getinputnode() throws Exception // O(V)
         {
             String s = BR.readLine();
             num_nodes = Integer.parseInt(s);
-            initsizes(num_nodes + 3);
+            nodes.setSize(num_nodes + 2);
             String [] a;
             for (int i = 0; i < num_nodes; i++) // O(V)
             {
@@ -144,11 +133,11 @@ public class DijkestraIntervals {
                 if (res <= R)
                 {
                     double time = res / 5.0;
-                    pnode hob = new pnode(time, res, i);
-                    newinterval = (int)(time / intervalRange) % speedCount;
-                    parent[i][0][newinterval] = -1;
-                    cost[i][0][newinterval] = time;
-                    costdis[i][0][newinterval] = res;
+                    pnode hob = new pnode(time, res, i, -1);
+                    Pair<Integer, Integer> ck = new Pair(-1, i);
+                    parent.put(ck, -1);
+                    costdis.put(ck, res);
+                    cost.put(ck, time);
                     pq.add(hob);
                 }
                 res = displacement(x2, y2, xnode, ynode);
@@ -165,32 +154,44 @@ public class DijkestraIntervals {
         //Dijkstra Algorithm
         private static void run() // O(E log(V))
         {
+            double curtime, curdis;
             while (!pq.isEmpty()) // O(E log(V))
             {
-                int newnode = pq.peek().nod;
-                double newnodecost = pq.peek().time, newnodedis = pq.peek().distance;
+                int curparent = pq.peek().parent;
+                curNode = pq.peek().nod;
+                curdis = pq.peek().distance;
+                curtime = pq.peek().time;
                 pq.poll();
-                interval = (int)(newnodecost / intervalRange);
-                interval %= speedCount;
-                if (newnode == num_nodes)
+                if (curNode == num_nodes)
                 {
-                    timecost = Math.min(newnodecost * 60, timecost);
+                    timecost = curtime;
+                    curNode = curparent;
                     break;
                 }
-                for (int i = 0; i < nodes.get(newnode).child.size(); i++)
+                interval = (int)(curtime / intervalRange) % speedCount;
+                for (int i = 0; i < nodes.get(curNode).child.size(); i++)
                 {
-                    int id = nodes.get(newnode).child.get(i).id;
-                    double time = nodes.get(newnode).child.get(i).intervals.get(0), dist = nodes.get(newnode).child.get(i).distance;
-                    if(!nodes.get(newnode).child.get(i).isfinal)
-                        time = nodes.get(newnode).child.get(i).intervals.get(interval);
-                    newinterval = (int)((time + newnodecost) / intervalRange) % speedCount;
-                    if(cost[id][interval][newinterval] > newnodecost + time ||
-                      (cost[id][interval][newinterval] == newnodecost + time && costdis[id][interval][newinterval] > dist + newnodedis))
+                    int id = nodes.get(curNode).child.get(i).id;
+                    double time = curtime + nodes.get(curNode).child.get(i).intervals.lastElement();
+                    double dis = curdis + nodes.get(curNode).child.get(i).distance;
+                    Pair<Integer, Integer> ck = new Pair(curNode, id);
+                    if (!nodes.get(curNode).child.get(i).isfinal)
+                        time = curtime + nodes.get(curNode).child.get(i).intervals.get(interval);
+                    if (!cost.containsKey(ck) || cost.get(ck) > time || (cost.get(ck) == time && costdis.get(ck) > dis))
                     {
-                        cost[id][interval][newinterval] = newnodecost + time;
-                        costdis[id][interval][newinterval] = dist + newnodedis;
-                        parent[id][interval][newinterval] = newnode;
-                        pq.add(new pnode(cost[id][interval][newinterval], costdis[id][interval][newinterval], id));
+                        if (!cost.containsKey(ck))
+                        {
+                            cost.put(ck, time);
+                            costdis.put(ck, dis);
+                            parent.put(ck, curparent);
+                        }
+                        else
+                        {
+                            cost.replace(ck, time);
+                            costdis.replace(ck, dis);
+                            parent.replace(ck, curparent);
+                        }
+                        pq.add(new pnode(time, dis, id, curNode));
                     }
                 }
             }
@@ -198,24 +199,27 @@ public class DijkestraIntervals {
         //get all avaliable nodes that can reach the destination
         private static void end() // O(V)
         {
-            int ind = num_nodes;
+            int ind1 = num_nodes, ind = curNode;
             String ret = new String();
-            System.out.println(timecost);
-            timecost = Double.MAX_VALUE;
-            totaldrive = costdis[ind][interval];
-            while (parent[ind][interval] != -1) // O(V)
+            totaldrive = costdis.get(new Pair(ind, ind1));
+            path.add(ind1);
+            while (ind != -1 && parent.containsKey(new Pair(ind, ind1))) // O(V)
             {
                 path.add(ind);
-                ind = parent[ind][interval];
+                int x = ind;
+                ind = parent.get(new Pair(x, ind1));
+                ind1 = x;
             }
-            path.add(ind);
             String Path = new String();
             for (int i = path.size() - 1; i > 0; i--) // O(V)
             {
                 Path += path.elementAt(i);
                 if(i != 1)
+                {
                     Path += " ";
+                }
             }
+            timecost *= 60;
             ret += "path: " + Path + ", ";
             lines.add(Path);
             ret += String.format("%.2f", timecost) + " mins, ";
@@ -244,12 +248,13 @@ public class DijkestraIntervals {
     public static class pnode implements Comparable <DijkestraIntervals.pnode> // O(1)
     {
         public Double time, distance;
-        public Integer nod;
-        public pnode(Double f, Double x, Integer t)
+        public Integer nod, parent;
+        public pnode(Double f, Double x, Integer t, Integer p)
         {
             time = f;
             distance = x;
             nod = t;
+            parent = p;
         }
         @Override
         public int compareTo(DijkestraIntervals.pnode other) {
