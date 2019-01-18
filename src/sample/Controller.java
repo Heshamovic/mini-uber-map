@@ -1,7 +1,10 @@
 package sample;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.io.FileReader;
@@ -24,17 +27,26 @@ public class Controller {
     @FXML
     private ComboBox sampleBtn;
     @FXML
+    private ComboBox simu;
+    @FXML
     private Label status;
     @FXML
     private Button showDiff;
     @FXML
     private Label runlbl;
     @FXML
+    private BorderPane pane;
+    public static int query;
+    boolean la2a = false;
+    @FXML
     public void initialize() {
-        status.setText("Not tests yet!");
-        statusBall.setFill(Color.GHOSTWHITE);
-        showDiff.setDisable(true);
-        sampleBtn.getItems().addAll("Sample Case #1", "Sample Case #2", "Sample Case #3", "Sample Case #4", "Sample Case #5");
+        if(!la2a)
+        {
+            status.setText("Not tests yet!");
+            statusBall.setFill(Color.GHOSTWHITE);
+            showDiff.setDisable(true);
+            sampleBtn.getItems().addAll("Sample Case #1", "Sample Case #2", "Sample Case #3", "Sample Case #4", "Sample Case #5");
+        }
     }
 
     public static Vector<String>vec = new Vector<>();
@@ -42,25 +54,38 @@ public class Controller {
     public static boolean tog = true, showTog = false, bonus = false;
     public void toggleRadio(){
         tog = !tog;
+        if(tog)
+            simu.setDisable(false);
+        else
+            simu.setDisable(true);
         bonus = false;
     }
     public void toggleBonusRadio(){
         bonus = true;
+        simu.setDisable(true);
     }
     public void runSampleCase1()throws Exception
     {
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
-        if(sampleBtn.getValue() == "Sample Case #1")
+        if(sampleBtn.getValue() == "Sample Case #1") {
             runSampleCase(1);
-        else if(sampleBtn.getValue() == "Sample Case #2")
+        }
+        else if(sampleBtn.getValue() == "Sample Case #2") {
             runSampleCase(2);
-        else if(sampleBtn.getValue() == "Sample Case #3")
+        }
+        else if(sampleBtn.getValue() == "Sample Case #3") {
             runSampleCase(3);
-        else if(sampleBtn.getValue() == "Sample Case #4")
+        }
+        else if(sampleBtn.getValue() == "Sample Case #4") {
             runSampleCase(4);
-        else if(sampleBtn.getValue() == "Sample Case #5")
+        }
+        else if(sampleBtn.getValue() == "Sample Case #5") {
             runSampleCase(5);
+        }
+        query = 0;
+        putElements();
+        simu.setDisable(false);
     }
     public void runSampleCase(int fileNo)throws Exception
     {
@@ -121,14 +146,19 @@ public class Controller {
     {
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
+        simu.setDisable(true);
+        simu.getItems().clear();
+        simu.setPromptText("Simulate");
         if(bonus)
         {
             runMediumCaseBonus(0);
+            putElements();
             return;
         }
         if(tog)
         {
             runMediumCaseNormal(0);
+            putElements();
             return;
         }
         vec.clear();
@@ -175,19 +205,25 @@ public class Controller {
             showDiff.setDisable(false);
             vec = check.diff;
         }
+        putElements();
     }
     public void runLargeCases()throws Exception
     {
         resultsTMP.getItems().clear();
         showDiff.setText("Show Differences");
+        simu.setDisable(true);
+        simu.getItems().clear();
+        simu.setPromptText("Simulate");
         if(bonus)
         {
             runLargeCaseBonus(0);
+            putElements();
             return;
         }
         if(tog)
         {
             runLargeCaseNormal(0);
+            putElements();
             return;
         }
         vec.clear();
@@ -232,6 +268,7 @@ public class Controller {
             showDiff.setDisable(false);
             vec = check.diff;
         }
+        putElements();
     }
     public void showDiffrences()
     {
@@ -252,6 +289,7 @@ public class Controller {
         }
         showTog = !showTog;
     }
+
     //Normal:
     public void runSampleCaseNormal(int fileNo)throws Exception
     {
@@ -410,8 +448,8 @@ public class Controller {
         vec.clear();
         timeList.getItems().clear();
         resultslist.getItems().clear();
-        FileReader FR = new FileReader("BonusSamples/SampleCases/map" + fileNo + "B.txt");
-        FileReader FR2 = new FileReader("BonusSamples/SampleCases/queries" + fileNo + ".txt");
+        FileReader FR = new FileReader("BonusSamples/SampleCases/map1B.txt");
+        FileReader FR2 = new FileReader("BonusSamples/SampleCases/queries1.txt");
 
         DijkestraIntervals.dijkestraIntervals DEJ = new DijkestraIntervals.dijkestraIntervals(FR);
         DEJ.getinputnode();
@@ -554,5 +592,27 @@ public class Controller {
             showDiff.setDisable(false);
             vec = check.diff;
         }
+    }
+
+    public void putElements(){
+        if(Dijkestra.dijkstra.query > simu.getItems().size())
+            for(int i = simu.getItems().size() ; i < Dijkestra.dijkstra.query ; i++)
+            {
+                simu.getItems().add(i);
+            }
+        else
+            while (Dijkestra.dijkstra.query < simu.getItems().size())
+                simu.getItems().remove(simu.getItems().size() - 1);
+        simu.setPromptText("Simulate");
+
+    }
+    public void simulate()throws Exception
+    {
+        try{
+            query = Integer.parseInt(simu.getValue().toString());
+            Simulate simulate = new Simulate();
+            simulate.display();
+        }
+        catch (Exception e) { }
     }
 }

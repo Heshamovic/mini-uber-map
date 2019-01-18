@@ -63,7 +63,7 @@ public class Checker {
         }
         else if(file == "SampleB")
         {
-            FileReader FR = new FileReader("BonusSamples/SampleCases/output" + fileNo + ".txt");
+            FileReader FR = new FileReader("BonusSamples/SampleCases/output1.txt");
             BufferedReader BR = new BufferedReader(FR);
             String s;
             int i = 0;
@@ -139,8 +139,7 @@ public class Checker {
         catch (Exception e)
         {
             System.out.println(e);
-        }
-        */
+        }*/
       try{
             for (int i = 0 ; i < v.size() ; i++) {
                 if(v.get(i).length() != lines.get(i).length()){
