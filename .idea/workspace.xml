@@ -1,72 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="speeding up normal dijkestra">
-      <change afterPath="$PROJECT_DIR$/TestCases/NAMap.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/NAQueries.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/OLMap.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/OLMapB.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/OLQueries.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/OLQueriesB.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/SFMap.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/SFQueries.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/TGMap.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/TGQueries.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/map1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/map1B.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/map4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/map5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/map8.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/queries1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/queries1B.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/queries4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/queries5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestCases/queries8.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/Layout/base/Layout.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/Layout/random/RandomLayout.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/cells/ButtonCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/cells/ImageCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/cells/LabelCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/cells/RectangleCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/cells/TitledPaneCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/cells/TriangleCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/graph/Cell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/graph/CellLayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/graph/CellType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/graph/Edge.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/graph/Graph.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/graph/Model.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/graph/MouseGestures.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/fxgraph/graph/ZoomableScrollPane.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sample/Simulate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sample/sim.fxml" afterDir="false" />
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="Final project">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Samples/outPut.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Samples/sample1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Samples/sample2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Samples/sample3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Samples/sample4.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Samples/sample5.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Samples/sample6.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Samples/sample7.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/module-info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Checker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Checker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Controller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Dijkestra$dijkstra.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Dijkestra$dijkstra.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/Dijkestra$pnode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/Dijkestra$pnode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra$QueryAns.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra$QueryAns.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra$enode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra$enode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra$node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra$node.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra$pnode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra$pnode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/DoubleEndDjikestra.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mini uber map/sample/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mini uber map/sample/sample.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Checker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Checker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Dijkestra.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Dijkestra.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/DijkestraIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/DijkestraIntervals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/DoubleEndDjikestra.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/DoubleEndDjikestra.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/sample.fxml" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -146,8 +82,6 @@
                 <element signature="method#displacement#0;class#dijkstra#0;class#Dijkestra#0" />
                 <element signature="method#beready#0;class#dijkstra#0;class#Dijkestra#0" />
                 <element signature="method#run#0;class#dijkstra#0;class#Dijkestra#0" />
-                <element signature="class#pnode#0;class#Dijkestra#0" />
-                <element signature="class#Node#0;class#Dijkestra#0" />
               </folding>
             </state>
           </provider>
@@ -262,8 +196,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -292,6 +224,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -484,7 +418,14 @@
       <option name="project" value="LOCAL" />
       <updated>1545610212129</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Final project">
+      <created>1547833386346</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1547833386346</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -493,7 +434,7 @@
   <component name="ToolWindowManager">
     <frame x="55" y="25" width="1545" height="875" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.17811875" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.18345563" />
       <window_info id="Structure" order="1" weight="0.24962178" />
       <window_info id="Favorites" order="2" weight="0.3295626" />
       <window_info id="Designer" order="3" />
@@ -539,7 +480,8 @@
     <MESSAGE value="Testing and updating" />
     <MESSAGE value="Commenting" />
     <MESSAGE value="speeding up normal dijkestra" />
-    <option name="LAST_COMMIT_MESSAGE" value="speeding up normal dijkestra" />
+    <MESSAGE value="Final project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final project" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -719,8 +661,6 @@
             <element signature="method#displacement#0;class#dijkstra#0;class#Dijkestra#0" />
             <element signature="method#beready#0;class#dijkstra#0;class#Dijkestra#0" />
             <element signature="method#run#0;class#dijkstra#0;class#Dijkestra#0" />
-            <element signature="class#pnode#0;class#Dijkestra#0" />
-            <element signature="class#Node#0;class#Dijkestra#0" />
           </folding>
         </state>
       </provider>
