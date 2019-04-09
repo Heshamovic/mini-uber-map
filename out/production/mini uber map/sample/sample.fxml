@@ -56,6 +56,24 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Label>
+            <HBox prefHeight="31.0" prefWidth="219.0">
+               <children>
+                  <RadioButton fx:id="biRadio" mnemonicParsing="false" onAction="#toggleRadio" text="Bidirectional">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="g1" />
+                     </toggleGroup>
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="normalRadio" mnemonicParsing="false" onAction="#toggleRadio" selected="true" text="Normal" toggleGroup="$g1">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </RadioButton>
+               </children>
+            </HBox>
+            <RadioButton fx:id="bonusRadio" mnemonicParsing="false" onAction="#toggleBonusRadio" prefHeight="18.0" prefWidth="81.0" text="Bonus" toggleGroup="$g1" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
